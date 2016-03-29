@@ -1,0 +1,110 @@
+|\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+\title{Auxiliar 2 - Invariantes, Diagramas de Estados y Recursión}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+\textbf{Preliminares (Java training)}
+\begin{enumerate}
+\item ¿Es este código correcto? Corríjalo si no es así
+\begin{lstlisting}[language=Java, frame=single]
+ststic public int mayor(int x, int y ) {
+    return (x+y)/2+Math.abs((x-y)/2);
+} 
+\end{lstlisting}
+
+\item ¿Qué realiza el siguiente código? 
+%\lstset{frameround=tttt}
+\begin{lstlisting}[language=Java, frame=single]
+double suma = 0, n = 0;
+Scanner in = new Scanner(System.in);
+while(true) {
+    double x = in.nextDouble();
+    if (x == 0) break;
+    if (x < 1.0 || x > 7.0) continue;
+    suma += x; n++;
+}
+System.out.println("Promedio = "+suma/n);
+\end{lstlisting}
+Reescriba el código anterior sin utilizar \texttt{break} ni \texttt{continue}
+
+
+
+\item Cree la función \texttt{invertirArreglo} que recibe un arreglo de \texttt{int}s e invierte sus elementos. ¿Podemos ocupar esta misma idea para invertir \texttt{String}s?
+\end{enumerate}
+\vspace{5ex}
+\textbf{Problemas}
+\begin{problems}
+
+
+\problem \textbf{Distancia máxima}. Diseñe un algoritmo que permita encontrar el par de números enteros de un arreglo $A$ con $n$ elementos ($n\geq2$) tales que su distancia es máxima. Defina adecuadamente un invariante, verifique las condiciones iniciales para que este sea verdadero, defina la condición de salida e implemente el cuerpo del algoritmo.
+\newpage
+
+\problem \textbf{Un juego con monedas}. Alicia y Roberto tienen una moneda no cargada $\left(\mathbb{P}(cara) = \mathbb{P}(sello) = \frac{1}{2}\right)$ y deciden tirarla al aire un número indeterminado de veces hasta que :
+\begin{itemize}
+    \item Salgan de corrido cara, cara, sello. En cuyo caso Alicia gana el juego.
+    \item Salgan de corrido cara, sello, sello. En cuyo caso Roberto gana el juego.
+\end{itemize}
+¿Es este juego justo?
+\begin{enumerate}[a)]
+    \item Escriba la función \texttt{lanzarMoneda} que con igual probabilidad retorna \texttt{false}(sello) o \texttt{true}(cara).
+    \item Construya el diagrama de estados correspondiente al juego entre Alicia y Roberto.
+    \item Implemente (basándose en el diagrama anterior) la función \texttt{juegoConMonedas} que simula el juego descrito anteriormente retornando \texttt{false} en caso de que Alicia gane y \texttt{true} en caso de que Roberto lo haga.
+    \item Ejecute $n$ veces \texttt{juegoConMonedas} y observe las frecuencias con las que gana Alicia y Roberto. ¿Es este juego justo?
+\end{enumerate}
+\vspace{5ex}
+\problem \textbf{Inversiones}. Un mercado de inversión de acciones tiene las siguientes reglas: 
+\begin{itemize}
+    \item Se pueden comprar y vender acciones en cualquier día.
+    \item Una persona puede comprar acciones sólo si no tiene acciones sin vender.
+    \item Cada vez que se compra una acción se tiene un costo fijo de \$C (Además del precio propio de la acción ese día).
+\end{itemize}  
+Un experto predice el precio de las acciones para los siguientes $n$ días y su predicción está en un arreglo de enteros $P$. Cree un programa que dado la predicción P y el costo fijo C, muestre cuál es la máxima ganancia que se puede obtener en ese periodo.
+
+\textbf{Hint:} Para un día cualquiera use recursión para evaluar las ganancias de los casos de comprar/vender o pasar ese día, escoja la mejor opción.
+
+\textbf{Propuesto:} Modifique el programa anterior para que indique exactamente que días debe comprar y vender acciones.
+\end{problems}
+
+\end{document}
