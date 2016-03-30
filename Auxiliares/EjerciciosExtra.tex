@@ -1,0 +1,50 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsfonts,setspace}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+\title{Ejercicios extra Java}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+
+\begin{document}
+\maketitle
+
+\vspace{-5ex}
+\begin{problems}
+\problem Cree la clase \texttt{Fraccion} con la siguiente definición:
+
+\begin{enumerate}
+\item Cree un constructor \texttt{public Fraccion(int num, int den)}, que inicializa una fracción usando num y den como numerador y denominador.
+\item Cree otro constructor\footnote{Las clases en Java pueden tener más de un constructor siempre que reciban parámetros distintos} \texttt{public Fraccion(String frac)} donde frac es un string que representa una fracción por ejemplo ''3/5'', debe descomponer este string y guardar los numeros como enteros. (Puede suponer que el string siempre será válido).
+\item Cree la función \texttt{public static int mcd(int a, int b)} que calcula el mcd entre 2 números, para esto use el algoritmo de Euclides este dice que el $mcd(a,b)=mcd(b,a\%b)$ además como caso base se tiene que $mcd(a,0)=a$.
+\item Cree el método \texttt{public void simplificar()} que simplifica la fracción, para esto use \texttt{mcd}
+\item Cree el método \texttt{public Fraccion suma(Fraccion other)} que devuelve la fracción simplificada que representa la suma de la fracción actual con la fracción other.
+\item Cree el método \texttt{public String toString()} que devuelve un string que representa la fracción por ejemplo ''4/7''.
+\end{enumerate}
+
+Utilice la clase anterior en un programa interactivo que sume n fracciones. Primero deberá pedir al usuario un numero n, y luego debera pedir que ingrese n fracciones, al final deberá mostrar la suma de las n Fracciones.
+
+\begin{codebox}
+n?
+3
+Fraccion 1?
+1/4
+Fraccion 2?
+1/3
+Fraccion 3?
+-1/12
+La suma total es: 1/2
+\end{codebox}
+
+\problem Cree una función \texttt{public static int romano(String num)} que convierte un string que representa un número romano (hasta 50) a un entero. Los números romanos tienen las siguientes reglas:
+\begin{itemize}
+	\item Las letras I, V, X y L se asignan a los números 1, 5, 10 y 50 respectivamente.
+	\item Los letras se escriben de mayor a menor asignación numérica y se suman (por ejemplo VII = 5 + 1 + 1 = 7)
+	\item Existen las siguientes excepciones: IV = 4, IX=9, y XL = 40.
+\end{itemize}
+
+\end{problems}
+
+\end{document}

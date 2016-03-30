@@ -1,0 +1,124 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+
+\title{Tarea 1: Copo de nieve de Koch}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+\vspace{-2ex}
+\begin{center}
+Fecha de Entrega: 31 de Marzo 23:59hrs
+\end{center}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{copo.png}
+\end{figure}
+
+\section{Introducción}
+Los fractales son figuras geométricas muy interesantes que parecen fragmentadas, tienen dimensión no entera y no pueden ser expresadas de una forma paramétrica. Además muchos de ellos tienen la propiedad de autosimilitud, es decir los fractales repiten su estructura a diferentes escalas. Este tipo de fractales se pueden construir a partir de la repetición de un patrón o regla. \\
+
+Si bien no existe una ecuación que permita describir un fractal, desde el punto de vista computacional los fractales son simplemente la aplicación de una función de dibujo recursivamente. \\
+
+En esta tarea se deberá implementar usando \texttt{Turtle} una visualización para el fractal ''Copo de nieve de Koch''.
+
+\section{Explicación}
+
+\subsection{Clases \texttt{Turtle} y \texttt{StdDraw}}
+Junto con el enunciado de la tarea se incluyen las clases \texttt{Turtle} y \texttt{StdDraw}, se dará una breve explicación de ellas a continuación:
+
+\begin{itemize}
+    \item Clase \texttt{StdDraw}: Esta clase facilita el uso de Canvas y el trabajo con dibujo de figuras geométricas en java usando Swing.
+    \item Clase \texttt{Turtle}: Esta clase permite el dibujo sobre un canvas usando el sistema Tortuga. Este sistema se basa en indicarle a la tortuga (clase) los movimientos y giros que se quieren realizar, a medida que la tortuga avanza una linea se traza por la trayectoria descrita. Posee un constructor que recibe 4 parámetros x0,y0,a0,w,h; que sitúa la tortuga en las coordenadas (x,y) con una orientación angular a0 en un Canvas de tamaño (w,h). Posee los métodos \texttt{goForward}, \texttt{turnLeft} y \texttt{turnRight} para avanzar en linea recta, cambiar la orientación angular a la izquierda y la derecha respectivamente.
+\end{itemize}
+
+Todos los ángulos en \texttt{Turtle} son medidos en grados sexagesimales.
+
+\subsection{Curva de Koch y Copo de Nieve}
+La curva de Koch es un fractal que se puede producir utilizando la siguiente regla:
+
+\vspace{-1ex}
+\begin{enumerate}
+    \item Para cada segmento recto de largo L se divide en 3 partes iguales de lados L/3
+    \item El segmento medio de esta división es reemplazado por 2 segmentos de lados L/3 que forman un ángulo de 60° entre ellos
+    \item Se vuelve a aplicar el paso 1 para los nuevos segmentos generados
+\end{enumerate}
+
+\vspace{-3ex}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.42]{koch.jpg}
+\end{figure}
+
+La figura muestra las primeras 4 iteraciones de la construcción del fractal. 
+
+\newpage
+El copo de nieve de Koch, es simplemente el trazado de 3 Curvas de Koch simultaneas.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.42]{copo2.png}
+\end{figure}
+
+En la figura se puede notar que si se comienza con los segmentos en rojo y se convierten en curvas de Koch usando el procedimiento anterior, se puede formar el copo de nieve de Koch.
+
+\section{Implementación}
+
+En esta tarea usted deberá entregar un archivo \texttt{Koch.java} que implementará lo siguiente:
+
+\begin{enumerate}
+    \item Cree una variable estática \texttt{int LMIN} y asígnele un valor pequeño por ejemplo 8.
+
+    \item Cree la función recursiva \texttt{public static void curvaDeKoch(Turtle tortuga, int largo)} que recibe una instancia de Turtle y un largo, y según de esto dibuja la curva de Koch. 
+    
+    Utilice como caso base el largo mínimo \texttt{LMIN}, es decir si la curva a dibujar es de largo menor a \texttt{LMIN} entonces se puede aproximar por un segmento. 
+    
+    Note que la posición y la orientación están dados por las variables de instancia de la tortuga.
+    
+    \item Cree la función \texttt{main} que deberá pedir al usuario un ángulo de rotación, y debe dibujar el copo de nieve de Koch rotado según el ángulo dado.
+\end{enumerate}
+
+\newpage
+\section{Reglas}
+
+\begin{itemize}
+    \item Esta tarea debe ser resuelta en Java.
+    \item Es obligatorio la entrega de un informe en formato pdf junto con su tarea (Ver siguiente sección).
+    \item Esta tarea es de carácter individual, cualquier caso de copia se evaluará con la nota mínima.
+    \item No olvide subir a U-cursos todos los archivos necesarios para que su tarea funcione correctamente.
+    \item Debe subir los archivos de código fuente (*.java). Los archivos compilados (*.class) no serán evaluados.
+    \item Cualquier duda respecto a la tarea puede ser consultada usando el foro del curso.
+    \item Se aceptan atrasos descontando 0.75 puntos por cada día o fracción. (Máximo 4 días).
+\end{itemize}
+
+\section{Informe}
+
+El informe debe describir el trabajo realizado, el código fuente desarrollado, los resultados obtenidos y las conclusiones o interpretaciones de estos. Principalmente sea conciso, describiendo cada uno de los puntos que a continuación se indican.
+
+\begin{itemize}
+    \item \textbf{Portada:} Indicando número de la tarea, fecha, autor, email, código del curso.
+    \item \textbf{Introducción:} Descripción breve del problema y su solución.
+    \item \textbf{Análisis del problema:} Exponga en detalle el problema, los supuestos que pretende ocupar, casos de borde y brevemente la metodología usada para resolverlo.
+    \item \textbf{Solución del problema:}
+    \begin{itemize}
+        \item Algoritmos de solución, incluyendo toda la información y figuras que considere necesarias.
+        \item Partes relevantes del código fuente
+        \item Ejemplos de entradas y salidas escogidos por usted.
+    \end{itemize}
+    \item \textbf{Modo de uso:} explicando brevemente cualquier dato extra necesario para la compilación y ejecución de su programa.
+    \item \textbf{Resultados y análisis:} Todo el análisis de los resultados, los gráficos y la discusión requerida.
+\end{itemize}
+
+\end{document}
