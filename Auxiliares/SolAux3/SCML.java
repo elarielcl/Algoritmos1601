@@ -21,7 +21,7 @@ public class SCML {
         System.out.println("Largo de SCML");
         System.out.println(c[lX][lY]);
 
-        
+        //La subsecuencia se recupera recorriendo la matriz c
         System.out.println("\nUna SCML");
         String reverso = "";
         int i = lX, j = lY;

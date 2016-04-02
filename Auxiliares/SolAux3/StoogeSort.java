@@ -10,31 +10,17 @@ public class StoogeSort {
     }
 
     public static void stoogeSort(double[] A, int ini, int fin){
+    	//Si primer y último elemento están desordenados se intercambian
         if(A[ini]>A[fin]){
             double t = A[ini];
             A[ini] = A[fin];
             A[fin] = t;
         }
         int dif = fin-ini;
-        if(dif>2){
-            stoogeSort(A,ini,fin-dif/3);
-            stoogeSort(A,ini+dif/3,fin);
-            stoogeSort(A,ini,fin-dif/3);
+        if(dif>2){ // Caso base |A| <= 2
+            stoogeSort(A,ini,fin-dif/3);//Ordeno dos primeros tercios
+            stoogeSort(A,ini+dif/3,fin);//Ordeno dos últimos tercios
+            stoogeSort(A,ini,fin-dif/3);//Vuelvo a ordenar dos primeros tercios
         }
     }
-
-    /**
-     * Analisis del algoritmo:
-     * Ecuacion de recurrencia: T(n) = 3T(2n/3) + 1, T(1) = 1
-     * Desenrrollando:  T(n) = 3*3T(4n/9) +2
-     *                  T(n) = 3^k T((2/3)^k n) + k
-     * Si k = log_(3/2) n:
-     *                  T(n) = 3^(log_(3/2) n)*T(1) + log_(3/2) n
-     *                  T(n) = 3^(log_(3/2) n) + log_(3/2) n
-     * Dado que: 3^(log_(3/2) n) = n^(log_(3/2) 3)
-     * Se llega a:      T(n) = n^(log_(3/2) 3) + log_(3/2) n
-     *                  T(n) = O(n^2.709...)
-     * Luego es peor que BubbleSort y QuickSort
-     */
-
 }
