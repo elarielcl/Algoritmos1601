@@ -1,0 +1,125 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{cancel}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% Sugerencias para un mejor titulo?
+\title{Auxiliar 3 - Algunos Desarrollos}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+\begin{problems}
+\problem El algoritmo, al hacer el intercamcio inicial y las tres ordenaciones recursivas satisface la siguiente relación de recurrencia :
+\begin{align*}
+T(n) &= 3T\left(\frac{2n}{3}\right) + 1
+\end{align*}
+Enfrentaremos esta ecuación desde dos enfoques:
+\begin{enumerate}
+\item \textbf{Desenrrollando} 
+\begin{align*}
+T(n) &= 3T\left(\frac{2n}{3}\right) + 1\\
+&= 3\left(3T\left(\frac{2\left(\frac{2n}{3}\right)}{3}\right) + 1\right) + 1\\
+&= \ldots \\
+&= 3^{k} T\left(\frac{n}{\left(\frac{3}{2}\right)^{k}}\right) + \sum_{i=0}^{k-1} 3^i\\
+&= 3^{k} T\left(\frac{n}{\left(\frac{3}{2}\right)^{k}}\right) + \frac{3^k-1}{2}
+\end{align*}
+Simplificaremos el análisis diciendo que solo existe un caso base $T(1) = 1$(en realidad $T(2) = 1$ también es caso base), con esto el $k$ para el cual se alcanza $T(1)$ se despeja de :
+\begin{align*}
+1 = \frac{n}{\left(\frac{3}{2}\right)^{k}} & \Rightarrow  k = log_{\frac{3}{2}} n
+\end{align*}
+Reemplazando en la ecuación anterior :
+\begin{align*}
+T(n) &= 3^{log_{\frac{3}{2}} n} \cancelto{1}{T(1)}\quad + \frac{3^{log_{\frac{3}{2}} n}-1}{2}\\
+&= n^{log_{\frac{3}{2}} 3}  + \frac{n^{log_{\frac{3}{2}} 3} - 1}{2}\\
+&= \frac{3}{2} n^{log_{\frac{3}{2}} 3} - \frac{1}{2}\\
+&\in \mathcal{O}( n^{log_{\frac{3}{2}} 3})\\
+&= \mathcal{O}( n^{2.709\ldots})
+\end{align*}
+Por lo que StoogeSort es menos eficiente que QuickSort, MergeSort($\in \mathcal{O}(nlog n)$) e incluso que InsertionSort, SelectionSort, BubbleSort($\in \mathcal{O}(n^2)$)
+\item \textbf{Con Teorema Maestro}\\
+En clases se analizó el Teorema Maestro para resolver ecuaciones de las forma :
+\begin{align*}
+T(n) = aT\left(\frac{n}{b}\right) + kn
+\end{align*}
+Usando una versión más general del Teorema Maestro podemos deducir que para ecuaciones de la forma :
+\begin{align*}
+T(n) = aT\left(\frac{n}{b}\right) + k & \Rightarrow T(n) \in \mathcal{O}\left(n^{log_{a}b}\right)
+\end{align*}
+Reemplazando las constantes correspondientes obtenemos  $T(n)\in \mathcal{O}( n^{log_{\frac{3}{2}} 3})= \mathcal{O}( n^{2.709\ldots})$
+\end{enumerate}
+
+\problem Si $c_{i,j}$ representa el largo de la subsecuencia común más larga(SCML) entre $x_{1}\ldots x_{i}$ y $y_{1}\ldots y_{i}$ entonces se cumple que :\\
+$$c_{i,j} = \left\{
+\begin{array}{c l}
+ 1 + c_{i-1,j-1}\quad si\ x_{i}=y_{j}\text{(pues $x_{i}=y_{j}$ es parte de la SCML)}\\
+ \quad \quad max(c_{i-1,j}, c_{i,j-1})\quad si\ x_{i}=y_{j}\text{(pues pude que $x_{i}$ o $y_{j}$ sean parte de la SCML)}
+\end{array}
+\right.
+$$
+Con esto podemos calcular con programación dinámica(llenando una matriz c) $c_{|X|,|Y|}$ que sería el largo de la subsecuencia común mas larga entre $X$ e $Y$.\\
+
+Finalmente podemos obtener la SCML larga a partir de $c$ con el siguiente procedimiento :
+\begin{itemize}
+\item Partiendo de $i = |X|, j = |Y|$ y mientras $i,j>0$
+\item Si $x_{i} = y_{j} \Rightarrow --j;--i;$ y $x_{i}=y_{j}$ es parte de la SCML
+\item Si no
+\begin{itemize}
+\item Si $c_{i-1,j}\geq c_{i,j-1} \Rightarrow --i;$
+\item Si no $--j;$
+\end{itemize}
+\end{itemize}
+\newpage
+\problem El algoritmo avaro dice :
+\begin{itemize}
+\item Ordene en P las películas según orden creciente de hora de fin
+\item Recorra P y vaya escogiendo la películas a medida que no se intersecten con las ya escogidas
+\end{itemize}
+Este algoritmo encuentra un conjunto óptimo(con cantidad máxima de películas)
+Un bosquejo de demostración es el siguiente.\\
+Sea ALG la solución de nuestro algoritmo avaro para cierto P y asumamos por $\to \gets$ que existe una solución OPT para la cual ALG selecciona $n$ películas y OPT selecciona $N>n$ películas. Usemos además como notación $ALG_{i}$, $OPT_{i}$ como las i-ésimas películas de la solución(ordenada) de ALG y OPT respectivamente.\\
+ALG y OPT tendrán las mismas películas hasta cierto $k$(pues ALG $\neq$ OPT) y serán diferentes en la película $k+1$, de hecho se cumple que $fin(ALG_{k+1}) \leq fin(OPT_{k+1})$, pues si no fuese así, por como funciona nuestro algoritmo, hubiese elegido a $OPT_{k+1}$ en vez de $ALG_{k+1}$. \\
+De manera análoga se puede mostrar que $\forall i > k\ fin(ALG_{i}) \leq fin(OPT_{i})$. En particular $fin(ALG_{n}) \leq fin(OPT_{n}) \leq fin(OPT_{N})$, por lo que $OPT_{N}$ debió ser elegida por nuestro algoritmo lo que es una $\to \gets$.
+
+\end{problems}
+
+\end{document}
