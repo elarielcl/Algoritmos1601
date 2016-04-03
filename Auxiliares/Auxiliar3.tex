@@ -5,6 +5,7 @@
 \usepackage{amsfonts,setspace}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{epstopdf}
 
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
@@ -70,9 +71,9 @@ A partir de lo anterior:
 
 El ADN puede ser representado como una secuencia de strings (A,C,G,T), las secuencias de distintas bases nitrogenadas(caracteres) definen genes en el ADN. En biología un problema de gran interés es encontrar la similitud entre distintas hebras de ADN. Para esto debemos encontrar cuán parecido son 2 strings $X$ e $Y$, una de medida de similitud consiste en encontrar la subsecuencia común más larga a ambas. \\
 
-Se define una subsecuencia de la siguiente forma: sean z, x 2 strings cualquiera diremos que z es subsecuencia de x si podemos obtener z al extraer 0 o caracteres de x. (Observe que no es lo mismo que ser substring). Por ejemplo, ''electra", ''once", ''grita" son subsecuencias de ''electroencefalografista".\\
+Se define una subsecuencia de la siguiente forma: sean $X$ e $Y$ 2 strings cualquiera diremos que $X$ es subsecuencia de $Y$ si podemos obtener $X$ al extraer 0 o más caracteres de $Y$. (Observe que no es lo mismo que ser substring). Por ejemplo, ''electra", ''once", ''grita" son subsecuencias de ''electroencefalografista".\\
 
-Para encontrar esta subsecuencia más larga podemos revisar todas las subsecuencias de $X$ y comprobar si también es subsecuencia de $Y$ retornando la más larga que cumpla esta propiedad. Sin embargo, esta solución revisa cada una de las $2^{|X|}$ subsecuencias de $X$, por lo que el algoritmo es ineficiente.\\
+Para encontrar esta subsecuencia más larga podemos revisar todas las subsecuencias de $X$ y comprobar si también es subsecuencia de $Y$ retornando la más larga que cumpla esta propiedad. Sin embargo, esta solución revisa cada una de las $2^{|X|}$ subsecuencias de $X$, por lo que el algoritmo es ineficiente.
 
 Proponga soluciones más eficientes a esta, e implemente la mejor.\\
 \textbf{Hint:} La solución del problema posee subestructuras óptimas (Programación Dinámica)
