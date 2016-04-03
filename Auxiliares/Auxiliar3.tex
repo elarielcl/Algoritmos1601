@@ -5,7 +5,6 @@
 \usepackage{amsfonts,setspace}
 \usepackage{listings}
 \usepackage{color}
-\usepackage{epstopdf}
 
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
@@ -53,7 +52,7 @@
 StoogeSort es un algoritmo de ordenación de arreglos que se basa en el principio de dividir para reinar. Su funcionamiento para ordenar un arreglo A de tamaño n es el siguiente: 
 
 \begin{itemize}
-    \item Se analiza el primer y el último elemento del arreglo, si el primero es menor se intercambia con el último.
+    \item Se analiza el primer y el último elemento del arreglo, si el primero es mayor se intercambia con el último.
     \item Se divide el arreglo A en 3 sub-arreglos de tamaño n/3
     \item Se aplica StoogeSort sobre los primeros 2n/3 elementos del arreglo.
     \item Se aplica StoogeSort sobre los últimos 2n/3 elementos.
@@ -63,17 +62,17 @@ StoogeSort es un algoritmo de ordenación de arreglos que se basa en el principi
 A partir de lo anterior:
 
 \begin{enumerate}
-    \item Implemente la función \texttt{public void StoogeSort(float[] A, int inicio, int fin)} que ordena según StoogeSort
+    \item Implemente la función \texttt{public static void StoogeSort(float[] A, int inicio, int fin)} que ordena según StoogeSort
     \item Analice la complejidad del algoritmo, discuta sobre este resultado comparándolo con \texttt{BubbleSort} y \texttt{QuickSort}.
 \end{enumerate}
 
 \problem \textbf{Similitud genética (Subsecuencia común más larga)}
 
-El ADN puede ser representado como una secuencia de strings (A,C,G,T), las secuencias de distintas bases nitrogenadas(caracteres) definen genes en el ADN. En biología un problema de gran interés es encontrar la similitud entre distintas hebras de ADN. Para esto debemos encontrar cuán parecido son 2 strings $X$ e $Y$, una de medida de similitud consiste en encontrar la subsecuencia común más larga a ambas. \\
+El ADN puede ser representado como una secuencia de strings (A,C,G,T); las secuencias de distintas bases nitrogenadas(caracteres) definen genes en el ADN. En biología, un problema de gran interés es encontrar la similitud entre distintas hebras de ADN. Para esto debemos encontrar cuán parecido son 2 strings $X$ e $Y$. Una de medida de similitud consiste en encontrar la subsecuencia común más larga a ambas. \\
 
-Se define una subsecuencia de la siguiente forma: sean $X$ e $Y$ 2 strings cualquiera diremos que $X$ es subsecuencia de $Y$ si podemos obtener $X$ al extraer 0 o más caracteres de $Y$. (Observe que no es lo mismo que ser substring). Por ejemplo, ''electra", ''once", ''grita" son subsecuencias de ''electroencefalografista".\\
+Siendo z, x 2 strings cualesquiera diremos que z es subsecuencia de x si podemos obtener z al extraer 0 o más caracteres de x. (Observe que no es lo mismo que ser substring). Por ejemplo, ''electra", ''once", ''grita" son subsecuencias de ''electroencefalografista".\\
 
-Para encontrar esta subsecuencia más larga podemos revisar todas las subsecuencias de $X$ y comprobar si también es subsecuencia de $Y$ retornando la más larga que cumpla esta propiedad. Sin embargo, esta solución revisa cada una de las $2^{|X|}$ subsecuencias de $X$, por lo que el algoritmo es ineficiente.
+Para encontrar esta subsecuencia más larga podemos revisar todas las subsecuencias de $X$ y comprobar si también es subsecuencia de $Y$ retornando la más larga que cumpla esta propiedad. Sin embargo, esta solución revisa cada una de las $2^{|X|}$ subsecuencias de $X$, por lo que el algoritmo es ineficiente.\\
 
 Proponga soluciones más eficientes a esta, e implemente la mejor.\\
 \textbf{Hint:} La solución del problema posee subestructuras óptimas (Programación Dinámica)
@@ -88,7 +87,7 @@ Alicia no sabe programar pero considera que el siguiente algoritmo(escrito en ps
 \end{center}
 Para lo que sigue considere que los tiempos de $P$ están en una matriz de $n \times 2$ y solo retorne la cantidad de películas escogidas.
 \begin{enumerate}
-    \item Implemente el pseudocódigo escrito por Alicia como una función\\ \texttt{public int maximoPeliculas(int [][] P)}
+    \item Implemente el pseudocódigo escrito por Alicia como una función\\ \texttt{public static int maximoPeliculas(int [][] P)}
     \item Considere que es Viernes (poco tiempo para el fin de semana) y que Roberto recolectó muchas películas ¿Qué problema tiene esta solución?
     \item Implemente nuevamente la función, pero más eficientemente.\\
     \textbf{Hint:} Sea avaro
