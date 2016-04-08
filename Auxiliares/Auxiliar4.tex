@@ -1,0 +1,91 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% COmpletar titulo
+\title{Auxiliar 4 - Listas Enlazadas y Árboles Binarios}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+
+
+%%CONVERSADAS EN REUNION PARA ESTE AUXILIAR
+
+%- Listas enlazadas
+%- Listas de doble enlace
+%- Invertir lista enlazada (nelson lo hizo)
+%- Clonar árbol
+%- Reflejar
+%- Ver si dos árboles tienen el mismo recorrido en inorden(armando listas), python(?)
+%- Multiplicación de matrices(nelson)
+%- Saber si lista es circular con un nodo
+%- Otros problemas
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+\begin{problems}
+%% - Juntar dos listas dadas sus nodos de inicios
+%% - Eliminar todos los elementos de una lista
+%% - Invertir una lista solo cambiando la dirección de sus enlaces (iterativo y recursivo)
+%% - Hacer operaciones con nodo cabecera
+\section*{Listas Enlazadas}
+\problem \textbf{Calentamiento.} Dada una lista enlazada de enteros, se pide que:
+\begin{itemize}
+    \item dado un entero, cuente las ocurrencias de este en la lista
+    \item dado un entero, elimine todas sus ocurrencias de la lista
+    \item elimine posibles duplicados en la lista, solo deje la primera ocurrencia. (\textbf{Hint:} use una lista auxiliar)
+    \item invierta la lista, solo cambiando la dirección de los enlaces (i.e., sin utilizar una lista adicional, ni insertando/eliminando elementos)
+\end{itemize}
+
+\problem \textbf{Loops en listas.} Dada la estructura de las listas enlazadas, es posible que el nodo que apunta un elemento sea un elemento anterior de la misma lista generando un ciclo o loop. Cree la función \texttt{static boolean tieneLoop(Nodo first)} que dado un nodo de una lista enlazada retorna true si la lista tiene un ciclo, calcule la complejidad del algoritmo.
+
+\section*{Árboles Binarios}
+\problem Una forma de saber si dos árboles binarios son similares, es verificar si tienen recorridos equivalentes. Para esto, se pide que implemente la función \texttt{public boolean inordenEquivalente(Nodo A, Nodo B)} que reciba dos nodos y retorne \texttt{true} si los recorridos en inorden de ambos árboles son idénticos.
+Para esto:
+\begin{itemize}
+    \item programe una función que reciba un árbol y retorne una lista enlazada con los elementos del árbol, tras ser recorrido en inorden
+    \item programe una función que reciba dos listas enlazadas y diga si las listas son iguales elemento a elemento
+    \item use las partes anteriores para implementar \texttt{inordenEquivalente}
+\end{itemize}
+
+\end{problems}
+
+\end{document}
