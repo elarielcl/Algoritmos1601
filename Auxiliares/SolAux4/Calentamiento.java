@@ -21,10 +21,11 @@ public class Calentamiento {
 	}
 	
 	static public Nodo eliminar(Nodo n, int x){
-		while(n!=null && n.val==x){
+		while(n.val==x){
 			n = n.sig;
+			if (n == null) return null;
 		}
-		if(n==null || n.sig==null) return n;
+		
 		Nodo prev = n;
 		Nodo actual = n.sig;
 		while(actual!=null){
