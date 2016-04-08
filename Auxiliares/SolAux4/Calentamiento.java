@@ -1,12 +1,28 @@
 
 public class Calentamiento {
 
-	static public int contarRec(Nodo n, int x){
-		if(n==null)
-			return 0;
-		if(n.val == x)
-			return 1 + contarRec(n.sig, x);
-		return contarRec(n.sig, x);
+	static public void imprimirListaIter(Nodo n){
+		Nodo actual = n;
+		if (actual != null){
+			System.out.print(actual.val);
+			actual = actual.sig;
+		}
+		while (actual != null) {
+			System.out.print(","+actual.val);
+			actual = actual.sig;
+		}
+		System.out.println();
+	}
+	
+	static public void imprimirListaRec(Nodo n){
+		if (n == null) return;
+		if (n.sig == null)
+			System.out.println(n.val);
+		else {
+			System.out.print(n.val + ",");
+			imprimirListaRec(n.sig);
+		}
+			
 	}
 	
 	static public int contarIter(Nodo n, int x){
@@ -20,7 +36,16 @@ public class Calentamiento {
 		return count;
 	}
 	
-	static public Nodo eliminar(Nodo n, int x){
+	static public int contarRec(Nodo n, int x){
+		if(n==null)
+			return 0;
+		if(n.val == x)
+			return 1 + contarRec(n.sig, x);
+		return contarRec(n.sig, x);
+	}
+	
+	static public Nodo eliminarIter(Nodo n, int x){
+		if (n == null) return null;
 		while(n.val==x){
 			n = n.sig;
 			if (n == null) return null;
@@ -38,18 +63,29 @@ public class Calentamiento {
 		return n;
 	}
 	
-	static public void eliminarDuplicados(Nodo n){
-		Nodo vistos = null;
+	static public Nodo eliminarRec(Nodo n, int x){
+		if (n == null) return null;
+		if (n.val == x) return eliminarRec(n.sig, x);
+		n.sig = eliminarRec(n.sig, x);
+		return  n;
+	}
+	
+	static public void eliminarDuplicadosIter(Nodo n){
 		Nodo actual = n;
 		while(actual!=null){
-			//if(contiene(vistos, actual.val)){
-				
-			//}
+			actual.sig = eliminarIter(actual.sig, actual.val);
+			actual = actual.sig;
 		}
 	}
 	
-	static public Nodo invertir(Nodo n){
-		if(n==null) return n;
+	static public void eliminarDuplicadosRec(Nodo n){
+		if (n != null) {
+			n.sig = eliminarRec(n.sig, n.val);
+			eliminarDuplicadosRec(n.sig);
+		}
+	}
+	
+	static public Nodo invertirIter(Nodo n){
 		Nodo reversedPart = null;
 		Nodo current = n;
 		while (current != null) {
@@ -61,14 +97,40 @@ public class Calentamiento {
 		return reversedPart;
 	}
 	
+	static public Nodo invertirRec(Nodo n){
+		if (n == null || n.sig == null) return n;
+		Nodo sig = n.sig;
+		Nodo resto = invertirRec(sig);
+		sig.sig = n;
+		n.sig = null;
+		return resto;
+	}
+	
 	static public void main(String[] args){
-		Nodo x = new Nodo(1, new Nodo(1, new Nodo(2, null)));
-		Nodo y = new Nodo(1, new Nodo(1, new Nodo(2, null)));
+		Nodo x = new Nodo(1, new Nodo(1, new Nodo(2, new Nodo(2, null))));
+		imprimirListaRec(x);
+		Nodo y,z ;
 		int ci = contarIter(x, 1);
 		int cr = contarRec(x, 1);
-		x = invertir(x);
-		y = eliminar(x, 1);
+		
 		System.out.println(ci);
 		System.out.println(cr);
+		System.out.println();
+		
+		x = invertirIter(x);
+		imprimirListaIter(x);
+		x = invertirRec(x);
+		imprimirListaRec(x);
+		
+		y = eliminarIter(x, 1);
+		z = eliminarRec(x,1);
+		imprimirListaIter(z);
+		imprimirListaRec(y);
+		eliminarDuplicadosIter(x);
+		imprimirListaIter(x);
+		
+		
+		
 	}
 }
+
