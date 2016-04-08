@@ -1,15 +1,15 @@
 
-public class Circular {
+public class LoopedList {
 
 	public static void main(String[] args) {
 		Nodo n1 = new Nodo(1,new Nodo(2, new Nodo(3,null)));
 		Nodo n2 = new Nodo(2,new Nodo(5,new Nodo(8,null)));
 		n2.sig.sig.sig = n2.sig;
-		System.out.println(esCircular(n1));
-		System.out.println(esCircular(n2));
+		System.out.println(tieneLoop(n1));
+		System.out.println(tieneLoop(n2));
 	}
 
-	public static boolean esCircular(Nodo first){
+	public static boolean tieneLoop(Nodo first){
 		/* Estrategia guardar la referencia de 2 elementos, recorrer la lista a velocidades
 		 * distintas, las referencias se encontraran si hay un ciclo.
 		 */
@@ -27,4 +27,3 @@ public class Circular {
 	}
 	
 }
-
