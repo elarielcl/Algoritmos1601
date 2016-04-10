@@ -1,0 +1,13 @@
+- pag 2, dice Espacialmente y debería decir Especialmente
+- pag 5, fila 3 columna 2 y fila 6 columna 2 deberían ser != ‘ ‘ && != ‘.’
+- pag 6, condición de primer if en estado FUERA debería ser !=’ ‘ && != ‘.’
+- pag 7, en el código de la derecha las últimas tres líneas del while principal parecen ser innecesarias
+- pag 9, primer while está mal parentizado, errores con las llaves { }(dos últimos else internos no abren {), while del otro código mal parentizado, else if de segundo código necesitan {}(else también)
+- pag 12, falta label sobre transición al estado final
+- pag 13, dice “El programa….” debería decir “Los programas…”
+- pag 14, caso ; está tanto en Acepta como en No Acepta
+- pag 15, “autómata” en vez de “automata”, condición para permanecer en entero y decimal debería ser <= 9, primera acción que permanece en decimal debería ser val+=(c-’0’)/n, quiźas el diagrama quedaría más claro poniendo a Fin y error en esquinas opuestas
+- pag 16, última línea falta ; en primer return, falta cerrar { del segundo else if, n debería ser double
+- pag 17, primer y penúltimo return les falta ; ,  n debería ser double
+- pag 18, “boolean” en vez de “true”
+

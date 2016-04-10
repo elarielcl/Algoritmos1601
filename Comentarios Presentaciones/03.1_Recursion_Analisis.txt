@@ -1,0 +1,16 @@
+- pag 4, “2^nivel(+1)” en vez de “2^1”
+- pag 7, como se hacen dos intercambios T(n) = 2n + nT(n-1)
+- pag 13, en el encabezado “salida2” en vez de “salida”, no se entiende el propósito de la tercera línea
+- pag 14, en el encabezado “salida3” en vez de “salida”, no se entiende el propósito de la tercera línea, si mascorto empieza siendo -1 nunca será verdadero que camino < mascorto, en esta función se reestablece x[i][j], sin embargo en las anteriores no se hace
+- pag 17, “... tales como …” en vez de “... tales …”
+- pag 22, “C_{n} = c_{n}/b^n” en vez de “C_{n} = c_{n}=b^n”, en la penúltima ecuación el c_{k} debería estar en mayusculas
+- pag 26, “O(phi_{1}^n)” en vez de “O(n)”
+- pag 31, “n^{log_{q}p}” en vez de “n^{log_{q}n}”
+- pag 42, “Resolución” en vez de “Resolucion”
+- pag 45, falta cerrar paréntesis en 2do punto
+- pag 47, título tiene paréntesis de más
+- pag 48, “... m[k+1,j]...” en vez de “...m[k+i,j]...”
+- pag 49, “... m[k+1,j]...” en vez de “...m[k+i,j]...”, “...definamos...” en vez de “...frginamos…”
+- pag 50, título tiene paréntesis de más
+- pag 51, “...pseudocódigo...” en vez de “...seudocódigo…”
+- pag 55, le faltan paréntesis al if

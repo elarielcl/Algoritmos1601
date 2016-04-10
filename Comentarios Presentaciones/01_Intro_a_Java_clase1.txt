@@ -1,0 +1,11 @@
+- pag 5, paréntesis no cerrado en primer punto
+- pag 6, “para usar …” en vez de “para usa …”
+- pag 7, “para usar …” en vez de “para usa …”
+- pag 11, “soporte” en vez de “seoporte”
+- pag 14, “para usar …” en vez de “para usa …”
+- pag 17, “static” en vez “ststic”, mayor(4,3) retorna 3(división entera)
+- pag 22, faltan paréntesis en los if
+- pag 32, se está incrementando x en vez de n, variable suma debería ser double
+- pag 33, se usa U.println en vez de System.out.println
+- pag 35, primo(1) entrega true
+

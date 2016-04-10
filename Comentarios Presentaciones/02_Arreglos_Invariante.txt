@@ -1,0 +1,12 @@
+- pag 2, “colección” en vez de “coleccion”
+- pag 6, “static” en vez de “Static”
+- pag 9, es confuso que se expliquen valores de k como subíndices de arreglos Java(notación con corchetes)
+- pag 13, el límite superior de la primera condición del invariante es n-2, en la segunda condición sería más claro que fuese a[k] en vez de a[i], o cuantificar el i de nuevo
+- pag 14, el límite superior de la primera condición del invariante es n-2, penúltima condición es hasta n-2
+- pag 16, imagen muestra que el límite de primera condición debería ser hasta k-2
+- pag 19, dice Insertar a[k-1] entre a[0],...,a[k-2], pero debería ser Insertar a[k] entre a[0],...,a[k-1]
+- pag 21, el límite superior de la primera condición del invariante es n-2, en la segunda condición sería más claro que fuese a[k] en vez de a[i], o cuantificar el i de nuevo
+- pag 29, “Últimas ...“ en vez de “Ultimas …”
+- pag 30, ¿Por qué v.add(“Hola”) produciría un error de compilación?
+- pag 31, Enunciado y diagrama no concuerdad, el “En palabras” no considera los iguales a 0
+

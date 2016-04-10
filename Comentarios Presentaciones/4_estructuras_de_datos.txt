@@ -1,0 +1,6 @@
+- pag 1, “Árboles” en vez de “Arboles”
+- pag 7, public NodoLista … en el constructor, “p.sgte” en vez de “p.Sgte”, error de sintaxis en 2 últimas líneas
+- pag 10, falta aux = aux.sgte dentro del loop
+- pag 14, slide repetida
+- pag 20, diferencia en definición de altura con apunte: http://users.dcc.uchile.cl/~bebustos/apuntes/cc3001/Estructuras/
+Comentario general : El final de los puntos (itemize) es muy diverso (nada, coma, punto y coma, punto)
