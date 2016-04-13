@@ -2,7 +2,7 @@
 \usepackage{teoria}
 \usepackage[utf8x]{inputenc}
 
-\title{Tarea 3: }
+\title{Tarea 3: Expresiones Algebraicas}
 \course[CC3001]{Algoritmos y Estructuras de Datos}
 \professor{Nelson Baloian}
 \professor{Patricio Poblete}
@@ -24,11 +24,36 @@ Fecha de Entrega: <COMPLETAR>
 
 
 \section{Introducción}
+Esta tarea consiste en implementar un tipo de dato abstracto (TDA)
+que permita representar fórmulas algebraicas, incluyendo las operaciones de
+crear e imprimir  de estas expresiones. 
 
-\section{Explicación}
 
 \section{Implementación}
-\section{Reglas}
+\subsection{El TDA Expresion}
+El TDA se debe llamar \textbf{Expresion} y provee al usuario las siguientes
+operaciones:
+\begin{itemize}
+\item \underline{Un constructor \texttt{Expresion(String formula)}}: construye una representación
+de árbol para la expresión algebraica a partir de una fórmula
+que viene contenida en un String. La fórmula viene en notación post-
+fijo, también conocida como notación polaca reversa. En la notación
+de postfijo primero se introducen los operandos y luego la operación
+respectiva. Por ejemplo: la expresión “a + b” en notación de postfijo
+corresponde a “a b +” la expresión “a + ((b - d) * c) - e” en notación
+postfijo corresponde a “a b d - c * + e -”. Se utiliza también un operador
+“menos unario” que en notación de postfijo se representa como
+“-”. Este operador toma solo un argumento. Por ejemplo, “-(1+2)” se
+representa como “1 2 + -”.
+\item \underline{\texttt{String toSimpleString()}}: genera una representación imprimible, en forma
+de un String conteniendo la fórmula en notación normal (infijo), usando
+paréntesis por cada operación realizada. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toSimpleString}  entrega “((a+((b-d)*c))-e)”.
+\item \underline{\texttt{String toString()}}: misma funcionalidad que \texttt{toSimpleString}, pero usando
+el mínimo número de paréntesis. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toString}  entrega “a+(b-d)*c-e”.
+
+\end{itemize}
+
+\section{Condiciones de Entrega}
 
 \begin{itemize}
     \item Esta tarea debe ser resuelta en Java.
@@ -37,25 +62,27 @@ Fecha de Entrega: <COMPLETAR>
     \item No olvide subir a U-cursos todos los archivos necesarios para que su tarea funcione correctamente.
     \item Debe subir los archivos de código fuente (*.java). Los archivos compilados (*.class) no serán evaluados.
     \item Cualquier duda respecto a la tarea puede ser consultada usando el foro del curso.
-    \item Se aceptan atrasos descontando 0.75 puntos por cada día o fracción. (Máximo 4 días).
+    \item \textbf{NO} se aceptarán atrasos.
 \end{itemize}
 
 \section{Informe}
 
-El informe debe describir el trabajo realizado, el código fuente desarrollado, los resultados obtenidos y las conclusiones o interpretaciones de estos. Principalmente sea conciso, describiendo cada uno de los puntos que a continuación se indican.
+El informe debe describir el trabajo realizado, la solución implementada, los resultados obtenidos
+y las conclusiones o interpretaciones de estos. Principalmente debe ser breve, describiendo cada uno
+de los puntos que a continuación se indican:
 
 \begin{itemize}
-    \item \textbf{Portada:} Indicando número de la tarea, fecha, autor, email, código del curso.
+    \item \textbf{Portada:} Indicando número de la tarea, fecha, autor, email, código del curso, etc.
     \item \textbf{Introducción:} Descripción breve del problema y su solución.
     \item \textbf{Análisis del problema:} Exponga en detalle el problema, los supuestos que pretende ocupar, casos de borde y brevemente la metodología usada para resolverlo.
-    \item \textbf{Solución del problema:}
-    \begin{itemize}
-        \item Algoritmos de solución, incluyendo toda la información y figuras que considere necesarias.
-        \item Partes relevantes del código fuente
-        \item Ejemplos de entradas y salidas escogidos por usted.
-    \end{itemize}
-    \item \textbf{Modo de uso:} explicando brevemente cualquier dato extra necesario para la compilación y ejecución de su programa.
-    \item \textbf{Resultados y análisis:} Todo el análisis de los resultados, los gráficos y la discusión requerida.
+    \item \textbf{Solución del problema:}Indique claramente los pasos que siguió para llegar a la solución
+del problema. Muestre mediante figuras y ejemplos qué es lo que realiza su código. Evite
+copiar todo el código fuente en el informe, sin embargo, puede mostrar las partes relevantes
+de éste.
+\item \textbf{Resultados y Conclusiones:}<COMPLETAR> Muestre ejemplos de entradas y salidas de su programa, incluyendo
+capturas de pantalla de estos. Analice la complejidad computacional de su solución.
+¿Es mejor que fuerza bruta? ¿Es óptima? Discuta estos resultados y elabore conclusiones
+sobre su trabajo.
 \end{itemize}
 
 \end{document}
