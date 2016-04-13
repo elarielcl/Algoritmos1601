@@ -52,6 +52,16 @@ paréntesis por cada operación realizada. Por ejemplo, para la fórmula “a b 
 el mínimo número de paréntesis. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toString}  entrega “a+(b-d)*c-e”.
 
 \end{itemize}
+En base a estas operaciones, implemente un transformador de expresiones algebraicas postfijo$\rightarrow$infijo interactiva, que lea desde la entrada fórmulas en notación de postfijo, de a una por línea, y que responda escribiendo en la salida la misma fórmula traducida a notación de infijo con un paréntesis por operación, luego el signo igual (“=”) y a continuación  la fórmula en infijo con un número mínimo de paréntesis.\\
+Para implementar su tarea, considere lo siguiente:
+
+\begin{itemize}
+\item Para simplificar el parsing de la entrada (fórmula descrita en el String formula), suponga que las variables son letras en $\left[a-z\right]$ , separados por un espacio en blanco, y las operaciones permitidas son + (suma), - (resta), * (multiplicación), / (división) y (menos unario). En caso de cualquier entrada que no cumpla con este formato, se debe mostrar en pantalla el error y abortar el programa (System.exit(-1)).
+\item Para almacenar la expresión algebraica, se debe utilizar como estruc tura de datos un árbol binario. El constructor debe parsear la fórmula en notación de postfijo y construir el  árbol respectivo, usando una pila.
+\item Para los métodos \texttt{toSimpleString()} y \texttt{toString()}, se debe recorrer el  árbol binario y generar la fórmula en notación normal (infijo) colocando paréntesis donde corresponda.
+\item Como guía, para minimizar el número de paréntesis tienen que comparar la prioridad del operador del padre
+con las de los operadores de los hijos. 
+\end{itemize}
 
 \section{Condiciones de Entrega}
 
