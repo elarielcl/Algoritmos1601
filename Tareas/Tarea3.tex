@@ -1,6 +1,8 @@
 \documentclass[dcc]{fcfmcourse}
 \usepackage{teoria}
 \usepackage[utf8x]{inputenc}
+\usepackage[nocenter]{qtree}
+
 
 \title{Tarea 3: Expresiones Algebraicas}
 \course[CC3001]{Algoritmos y Estructuras de Datos}
@@ -26,7 +28,15 @@ Fecha de Entrega: <COMPLETAR>
 \section{Introducción}
 Esta tarea consiste en implementar un tipo de dato abstracto (TDA)
 que permita representar fórmulas algebraicas, incluyendo las operaciones de
-crear e imprimir  de estas expresiones. 
+crear e imprimir  de estas expresiones.\\
+
+Para implementarlo se le pide que utilice un ``árbol binario de expresiones algebraicas'' el cual tiene en sus hojas los operandos de la expresión y en los demás nodos los operadores.\\
+
+A modo de ilustración la expresión ``a + ((b - d) * c) - e'' se representa con el siguiente árbol binario :\\
+
+\begin{center}
+\Tree [.-  [.+ a [.* [.- b d ] c ] ] e ]
+\end{center}
 
 
 \section{Implementación}
@@ -36,33 +46,33 @@ operaciones:
 \begin{itemize}
 \item \underline{Un constructor \texttt{Expresion(String formula)}}: construye una representación
 de árbol para la expresión algebraica a partir de una fórmula
-que viene contenida en un String. La fórmula viene en notación post-
-fijo, también conocida como notación polaca reversa. En la notación
+que viene contenida en un String. La fórmula viene en notación postfijo, también conocida como notación polaca reversa. En la notación
 de postfijo primero se introducen los operandos y luego la operación
 respectiva. Por ejemplo: la expresión “a + b” en notación de postfijo
-corresponde a “a b +” la expresión “a + ((b - d) * c) - e” en notación
+corresponde a “a b +”; la expresión “a + ((b - d) * c) - e” en notación
 postfijo corresponde a “a b d - c * + e -”. Se utiliza también un operador
 “menos unario” que en notación de postfijo se representa como
 “-”. Este operador toma solo un argumento. Por ejemplo, “-(1+2)” se
 representa como “1 2 + -”.
 \item \underline{\texttt{String toSimpleString()}}: genera una representación imprimible, en forma
 de un String conteniendo la fórmula en notación normal (infijo), usando
-paréntesis por cada operación realizada. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toSimpleString}  entrega “((a+((b-d)*c))-e)”.
+paréntesis por cada operación realizada. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toSimpleString}  entrega “((a + ((b - d) * c)) - e)”.
 \item \underline{\texttt{String toString()}}: misma funcionalidad que \texttt{toSimpleString}, pero usando
-el mínimo número de paréntesis. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toString}  entrega “a+(b-d)*c-e”.
+el \textbf{mínimo} número de paréntesis. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toString}  entrega “a+(b-d)*c-e”.
 
 \end{itemize}
-En base a estas operaciones, implemente un transformador de expresiones algebraicas postfijo$\rightarrow$infijo interactiva, que lea desde la entrada fórmulas en notación de postfijo, de a una por línea, y que responda escribiendo en la salida la misma fórmula traducida a notación de infijo con un paréntesis por operación, luego el signo igual (“=”) y a continuación  la fórmula en infijo con un número mínimo de paréntesis.\\
-Para implementar su tarea, considere lo siguiente:
+\subsection{Uso del TDA}
+En base a estas operaciones, implemente un transformador de expresiones algebraicas postfijo$\rightarrow$infijo interactivo, que lea desde la entrada fórmulas en notación de postfijo, de a una por línea, y que responda escribiendo en la salida la misma fórmula traducida a notación de infijo con un paréntesis por operación, luego el signo igual (“=”) y a continuación  la fórmula en infijo con número mínimo de paréntesis.\\
+\subsection{Consideraciones y Guías}
 
 \begin{itemize}
 \item Para simplificar el parsing de la entrada (fórmula descrita en el String formula), suponga que las variables son letras en $\left[a-z\right]$ , separados por un espacio en blanco, y las operaciones permitidas son + (suma), - (resta), * (multiplicación), / (división) y (menos unario). En caso de cualquier entrada que no cumpla con este formato, se debe mostrar en pantalla el error y abortar el programa (System.exit(-1)).
-\item Para almacenar la expresión algebraica, se debe utilizar como estruc tura de datos un árbol binario. El constructor debe parsear la fórmula en notación de postfijo y construir el  árbol respectivo, usando una pila.
+\item Para almacenar la expresión algebraica, se debe utilizar como estructura de datos un árbol binario. El constructor debe parsear la fórmula en notación de postfijo y construir el  árbol respectivo, usando una pila.
 \item Para los métodos \texttt{toSimpleString()} y \texttt{toString()}, se debe recorrer el  árbol binario y generar la fórmula en notación normal (infijo) colocando paréntesis donde corresponda.
-\item Como guía, para minimizar el número de paréntesis tienen que comparar la prioridad del operador del padre
-con las de los operadores de los hijos. 
+\item Para minimizar el número de paréntesis tienen que comparar la prioridad del operador del padre
+con las de los operadores de los hijos en lo distintos niveles del árbol.
 \end{itemize}
-
+\newpage
 \section{Condiciones de Entrega}
 
 \begin{itemize}
@@ -85,14 +95,14 @@ de los puntos que a continuación se indican:
     \item \textbf{Portada:} Indicando número de la tarea, fecha, autor, email, código del curso, etc.
     \item \textbf{Introducción:} Descripción breve del problema y su solución.
     \item \textbf{Análisis del problema:} Exponga en detalle el problema, los supuestos que pretende ocupar, casos de borde y brevemente la metodología usada para resolverlo.
-    \item \textbf{Solución del problema:}Indique claramente los pasos que siguió para llegar a la solución
+    \item \textbf{Solución del problema:} Indique claramente los pasos que siguió para llegar a la solución
 del problema. Muestre mediante figuras y ejemplos qué es lo que realiza su código. Evite
 copiar todo el código fuente en el informe, sin embargo, puede mostrar las partes relevantes
 de éste.
-\item \textbf{Resultados y Conclusiones:}<COMPLETAR> Muestre ejemplos de entradas y salidas de su programa, incluyendo
-capturas de pantalla de estos. Analice la complejidad computacional de su solución.
-¿Es mejor que fuerza bruta? ¿Es óptima? Discuta estos resultados y elabore conclusiones
-sobre su trabajo.
+\item \textbf{Modo de uso:} Explicando brevemente cualquier dato necesario para la compilación y
+ejecución de su programa.
+\item \textbf{Resultados:} Muestre ejemplos de entradas y salidas de su programa.
+\item \textbf{Discusión:} Discuta sobre implementaciones diferentes del TDA y compárelo con el uso de árboles binarios. Proponga nuevas operaciones que se podrían realizar sobre este TDA (las operaciones implementadas aquí fueron \texttt{toSimpleString} y \texttt{toString}).
 \end{itemize}
 
 \end{document}
