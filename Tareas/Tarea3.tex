@@ -52,8 +52,8 @@ respectiva. Por ejemplo: la expresión “a + b” en notación de postfijo
 corresponde a “a b +”; la expresión “a + ((b - d) * c) - e” en notación
 postfijo corresponde a “a b d - c * + e -”. Se utiliza también un operador
 “menos unario” que en notación de postfijo se representa como
-“-”. Este operador toma solo un argumento. Por ejemplo, “-(1+2)” se
-representa como “1 2 + -”.
+“\_”. Este operador toma solo un argumento. Por ejemplo, “-(1+2)” se
+representa como “1 2 + \_”.
 \item \underline{\texttt{String toSimpleString()}}: genera una representación imprimible, en forma
 de un String conteniendo la fórmula en notación normal (infijo), usando
 paréntesis por cada operación realizada. Por ejemplo, para la fórmula “a b d - c * + e -” \texttt{toSimpleString}  entrega “((a + ((b - d) * c)) - e)”.
@@ -66,11 +66,11 @@ En base a estas operaciones, implemente un transformador de expresiones algebrai
 \subsection{Consideraciones y Guías}
 
 \begin{itemize}
-\item Para simplificar el parsing de la entrada (fórmula descrita en el String formula), suponga que las variables son letras en $\left[a-z\right]$ , separados por un espacio en blanco, y las operaciones permitidas son + (suma), - (resta), * (multiplicación), / (división) y (menos unario). En caso de cualquier entrada que no cumpla con este formato, se debe mostrar en pantalla el error y abortar el programa (System.exit(-1)).
-\item Para almacenar la expresión algebraica, se debe utilizar como estructura de datos un árbol binario. El constructor debe parsear la fórmula en notación de postfijo y construir el  árbol respectivo, usando una pila.
+\item Para simplificar el parsing de la entrada (fórmula descrita en el String formula), suponga que las variables son letras en $\left[a-z\right]$ , separados por un espacio en blanco, y las operaciones permitidas son + (suma), - (resta), * (multiplicación), / (división) y \_(menos unario). En caso de cualquier entrada que no cumpla con este formato, se debe mostrar en pantalla el error y abortar el programa (System.exit(-1)).
+\item Para almacenar la expresión algebraica, se debe utilizar como estructura de datos un árbol binario. La idea es que las variables son hojas y los operadores nodos, cuyos hijos izquierdo y derecho son los respectivos operandos (en caso del operador \_ su hijo izquierdo es el operando correspondiente). El constructor debe parsear la fórmula en notación de postfijo y construir el  árbol respectivo, usando una pila.
 \item Para los métodos \texttt{toSimpleString()} y \texttt{toString()}, se debe recorrer el  árbol binario y generar la fórmula en notación normal (infijo) colocando paréntesis donde corresponda.
 \item Para minimizar el número de paréntesis tienen que comparar la prioridad del operador del padre
-con las de los operadores de los hijos en lo distintos niveles del árbol.
+con las de los operadores de los hijos en lo distintos niveles del árbol, para que expresiones como ``a + b*c'' no sean parentizadas pero ``a* (b+c)'' si. Además, considere reglas de asociatividad de manera que expresiones como ``a+b+c'' no sean parentizadas, pero ``a-(b+c)'' si.
 \end{itemize}
 \newpage
 \section{Condiciones de Entrega}
