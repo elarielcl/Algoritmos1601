@@ -1,0 +1,54 @@
+\documentclass[dcc, usedate]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8]{inputenc}
+\usepackage{epstopdf}
+
+\title[5]{Pilas y Colas}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+\date{15 de abril, 2016}
+
+
+\begin{document}
+\maketitle
+
+\section*{Pilas}
+Para resolver estos problemas asuma que cuenta con una implementación de la clase \texttt{Stack} que cuenta con los métodos \texttt{empty}, \texttt{top}, \texttt{pop} y \texttt{push}, tal y como fueron definidos en cátedra.\\
+\begin{problems}
+
+\problem \textbf{Elemento mayor siguiente.} Dado un arreglo de tamaño n, se define el elemento mayor siguiente para un elemento $a$, como el primer elemento que es mayor que $a$ que aparece a la derecha de $a$ al recorrer el arreglo de izquierda a derecha. Por ejemplo dado el arreglo $A=\{ 2, 9, 5, 13, 10 \}$ El elemento mayor siguiente para 2 es 9, para 9 es 13, y para 13 no existe. \\
+
+El objetivo de este problema es para cada elemento del arreglo determinar el elemento mayor siguiente y mostrarlo en pantalla en caso que este elemento no exista debe mostrar -1. \\
+
+Restricción: Su algoritmo debe funcionar en tiempo $O(n)$. \textbf{Hint:} Use un stack apropiadamente para guardar elementos. 
+
+\problem \textbf{Dos Pilas de Dijkstra.} Implemente el algoritmo de \textit{shunting yard} propuesto por Dijkstra, el cual lee una fórmula matemática en infijo (con \textbf{todos} los paréntesis) y retorna el resultado de ella.
+Para esto:
+\begin{itemize}
+    \item Utilice dos Pilas, una para operadores y otra para operandos.
+    \item A medida que lea un operador, agréguelo a la Pila de operadores.
+    \item Cuando lea un cierre de paréntesis, extraiga una operación de la Pila de operaciones y sus argumentos desde la pila de valores. El resultado, debe agregarlo a la Pila de valores.
+    \item Si lee un número, agréguelo a la Pila de valores.
+    \item El resultado final, será el único valor que quede en la Pila de valores.
+\end{itemize}
+¿Qué pasa si al terminar el algoritmo, quedan objetos en la Pila de valores? ¿Qué pasa si la Pila de valores se vacía antes que la de operaciones?
+(\textbf{Hint.} asuma que hay un espacio en blanco entre cada paréntesis, número u operación)
+
+
+
+\end{problems}
+\section*{Colas}
+Para resolver el siguiente problema asuma que cuenta con una implementación de la clase \texttt{Queue} que cuenta con los métodos \texttt{empty}, \texttt{enque} y \texttt{deque}, tal y como fueron definidos en cátedra.\\
+\begin{problems}
+\problem \textbf{Recorrido por niveles de árbol general.} En un árbol general los nodos tienen un número indeterminado de hijos. Para implementarlo, los nodos del árbol tendrán dos referencias, una al primero de sus hijos y otra a uno de sus hermanos, excepto el nodo raíz que no tiene referencia a hermano. Recorra los nodos del árbol por nivel, es decir, primero la raíz, luego los hijos de la raíz, los hijos de los hijos y así.\\
+\textbf{Hint.} Utilice una cola, visite los nodos al sacarlos de la cola y guarde en la cola los nodos hijos del nivel que estoy visitando, para visitarlos después.
+\end{problems}
+\end{document}
+
