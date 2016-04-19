@@ -1,0 +1,94 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{epstopdf}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+\title{Ecuaciones de Recurrencia}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+\begin{itemize}
+\item[P1.] El algoritmo Mergesort ordena un conjunto de tamaño n de la siguiente manera: primero se divide el conjunto en dos subconjuntos de tamaño $n/2$, luego se ordena cada subconjunto recursivamente, y finalmente se mezclan ambos subconjuntos ordenados (este último proceso toma tiempo $Cn$, para alguna constante $C$. Escriba la ecuación de recurrencia para el costo de ordenar un conjunto de tamaño n y luego resuélvala usando el Teorema Maestro. Suponga que $n$ es una potencia de $2$.
+
+\item[\textit{solución}.] la ecuación de recurrencia de este problema es:
+\begin{equation}
+T(n) = 2T(n/2) + Cn
+\end{equation}
+Pues cada vez, el problema se divide en dos subproblemas de tamaño $n/2$ y se unen los resultados en tiempo $Cn$.
+Por teorema maestro, sabemos que la solución de la ecuación es:
+\begin{equation}
+T(n) = \Theta(n\log(n))
+\end{equation}
+
+\item[P2] Resuelva la ecuación de recurrencia:
+\begin{equation}
+a_n = 8a_{n −1} − 15a_{n −2}
+\end{equation}
+con $a_0 = 1$, $a_1 = 1$.
+
+\item[\textit{solución}.] Como es una ecuación homogénea de segundo orden, podemos deteminar que el polinomio característico es:
+\begin{equation}
+\lambda^2 - 8\lambda + 15 = 0
+\end{equation}
+Factorizando, nos queda:
+\begin{equation}
+(\lambda - 3)(\lambda - 5) = 0
+\end{equation}
+Entonces, las soluciones son $\lambda_1 = 3$ y $\lambda_2 = 5$. Por lo tanto, la solución de la recurrencia es de la forma:
+\begin{equation}
+a_n = D\lambda_1^n + E\lambda_2^n
+\end{equation}
+Donde $D$ y $E$ son constantes a definir. Usando las condiciones iniciales, tenemos el siguiente sistema de ecuaciones:
+\begin{align*}
+D + E = 1\\
+3D + 5E = 1
+\end{align*}
+Cuyas soluciones son $D = 2$ y $E = -1$. Finalmente, la solución de la recurrencia es:
+\begin{equation}
+a_n = 2\cdot 3^n - 5^n
+\end{equation}
+
+
+\end{itemize}
+
+\end{document}
