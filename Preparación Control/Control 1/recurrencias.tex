@@ -89,6 +89,38 @@ a_n = 2\cdot 3^n - 5^n
 \end{equation}
 
 
+\item[P3.] 
+\begin{enumerate}
+\item Escriba un método booleano llamado EsJeraquico, que reciba como parámetro un pun-
+tero a la raíz de un árbol binario, y retorne verdadero si se cumple la siguiente condi-
+ción: para todos los nodos, el valor en su campo de información debe ser mayor o igual
+que los valores almacenados en sus hijos. Si cualquier nodo tiene un valor mayor que
+el de su padre, debe retornarse falso. Utilice la siguiente definición:
+
+\begin{lstlisting}[language=Java, frame=single]
+class NodoArbol{
+  int info;
+  NodoArbol izq;
+  NodoArbol der;
+}
+\end{lstlisting}
+
+\item Suponga que se tiene una lista enlazada con nodos definidos por:
+
+\begin{lstlisting}[language=Java, frame=single]
+class NodoLista{
+  int info;
+  NodoLista sgte;
+}
+\end{lstlisting}
+
+donde la variable lista apunta al comienzo de la lista, la cual se inicia con un nodo cabe-
+cera. Usted debe escribir un método llamado BuscarYMover, que reciba un parámetro
+de tipo int llamado x. Este método debe buscar en la lista un nodo que contenga el valor
+x. Si lo encuentra, debe adelantarlo un lugar en la lista, excepto si ya estaba en primer
+lugar, en cuyo caso debe dejarlo donde está. 
+\end{enumerate}
+
 \end{itemize}
 
 \end{document}
