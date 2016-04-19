@@ -121,6 +121,21 @@ x. Si lo encuentra, debe adelantarlo un lugar en la lista, excepto si ya estaba 
 lugar, en cuyo caso debe dejarlo donde está. 
 \end{enumerate}
 
+\item[\textit{solución}.] adjunta como código java
+
+\item[P3.] 
+Una persona desea ir en auto desde un punto $0$ hasta un punto $N$, siguiendo una línea recta. En todos los puntos $0, 1, \ldots , N$ hay puestos de arriendo de autos. Debido a las tarifas, es posible que para ir desde el punto $i$ hasta un punto $j$ sea más económico contratar un auto desde $i$ hasta un punto intermedio $k$ y otro desde $k$ hasta $j$. Suponiendo que se conoce el costo $a(i, j)$ de contratar un auto retirándolo en el punto $i$ y entregándolo en el punto $j$, calcule el costo óptimo $C(i, j)$ para ir desde i hasta j para todo $i, j$. Para esto, encuentre una fórmula recursiva y luego aplique tabulación (programación dinámica) para encontrar un algoritmo eficiente. Analice cuánto demora el cálculo de $C(0, N)$, en función de $N$ (sólo orden de magnitud).
+\item[\textit{solución}.] Como dice el enunciado, el costo $C(i,j)$ es el mínimo entre usar una ruta directa o pasar a través de alguna de las ciudades intermedias, es decir,
+\begin{equation*}
+C(i,j) = min\left(\lbrace a(i,j) \rbrace \cup \lbrace C(i,k) + C(k,j); \forall k \in [i+1,\ldots,j-1] \rbrace \right)
+\end{equation*}
+
+A partir de esta ecuación de recurrencia se puede programar un procedimiento que use tabulación y entregue $C(0,N)$ al finalizar. Para hacerlo crearemos una matriz de costos $C$ que se va llenando ``diagonalmente'', siendo la diagonal principal llena de $0$s, la siguiente de los $a(i,j)$ y las siguientes calculadas en base a las anteriores según la relación de recurrencia anteriormente encontrada(ver solución en código java adjunto).\\
+
+Un análisis informal del algoritmo dice que hay que llenar la mitad de una matriz de $n\times n$, lo que es $\mathcal{O}(n^2)$ elementos, y para cada uno de ellos se realiza un número de comparaciones proporcional a la diferencia de sus coordenadas(pues $k$ toma valores entre ellas), lo que tiene como cota superior $n$, por lo que el algoritmo es $\mathcal{O}(n^3)$.\\
+
+\textbf{Propuesto} Demuestre que el algoritmo es $\Omega (n^3)$, para esto cuente exactamente el número de comparaciones realizadas por el algoritmo. Lo que en realidad demostrará que el algoritmo es $\Theta (n^3)$.\\ \textbf{Hint:} Note que para elementos en una misma diagonal, el número de comparaciones realizadas es el mismo.
+
 \end{itemize}
 
 \end{document}
