@@ -31,3 +31,6 @@
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
+
+## Java
+*.class
