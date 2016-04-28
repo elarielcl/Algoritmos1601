@@ -29,24 +29,24 @@ public class Estructuras {
     }
 
     public static void buscarYMover(NodoLista lista, int x){
+        NodoLista aux;
         NodoLista anterior;
-        NodoLista anterior2;
-        anterior2 = lista;
+        anterior = lista;
         lista= lista.sgte;
         if(lista!=null && lista.info==x)
             return;
-        anterior = lista;
+        aux = lista;
         lista = lista.sgte;
         while(lista!=null){
             if(lista.info == x){
-                anterior.sgte = lista.sgte;
-                lista.sgte = anterior;
-                anterior2.sgte = lista;
+                aux.sgte = lista.sgte;
+                lista.sgte = aux;
+                anterior.sgte = lista;
                 return;
             }
             else{
-                anterior2 = anterior2.sgte;
                 anterior = anterior.sgte;
+                aux = aux.sgte;
                 lista = lista.sgte;
             }
         }
