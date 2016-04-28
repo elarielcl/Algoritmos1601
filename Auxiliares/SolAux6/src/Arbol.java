@@ -47,8 +47,6 @@ public class Arbol {
 		if(a==null) return 0;
 		int altizq = alturaBalanceado(a.izq);
 		int altder = alturaBalanceado(a.der);
-		System.out.println(altizq);
-		System.out.println(altder);
 		
 		//Alguno de los hijos no es AVL
 		if (altizq == -1 || altder == -1) return -1;
@@ -69,7 +67,20 @@ public class Arbol {
 	}
 	
 	static public void main(String [] args) {
+		//Arbol balanceado que no es ABB
 		Arbol a = new Arbol(new Arbol(null, null, 4), new Arbol(null, null, 2), 3);
+		//Arbol no balanceado
+		Arbol b = new Arbol(new Arbol(new Arbol(null,null,1),null,2),null,3);
+		//Arbol AVL
+		Arbol c = new Arbol(new Arbol(new Arbol(null,null,1),null,2),new Arbol(null,null,4),3);
+		
+		System.out.println(esAVL(a));
+		System.out.println(esAVL(b));
+		System.out.println(esAVL(c));
+		
 		System.out.println(esAVLlin(a));
+		System.out.println(esAVLlin(b));
+		System.out.println(esAVLlin(c));
 	}
 }
+
