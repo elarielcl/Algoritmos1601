@@ -1,4 +1,3 @@
-
 public class Arbol {
 	public Arbol izq;
 	public Arbol der;
@@ -21,38 +20,56 @@ public class Arbol {
             return true;
         }
         //Altura de los subarboles
-        altizq = a.izq.altura();
-        altder = a.der.altura();
-        //Verificar si la condición de AVL se cumple
-        if (Math.abs(altizq - altder) <= 1
-                && esAVL(a.izq)
-                && esAVL(a.der)) {
-            return true;
+        altizq = altura(a.izq);
+        altder = altura(a.der);
+        
+        //Verificar si es ABB
+        if ((a.izq == null || a.izq.valor < a.valor) && 
+        		(a.der == null || a.der.valor > a.valor)) {
+            
+        	//Verificar si la condiciï¿½n de AVL se cumple
+	        if (Math.abs(altizq - altder) <= 1
+	                && esAVL(a.izq)
+	                && esAVL(a.der)) {
+	            return true;
+	        }
         }
+
         //Al encontrar un nodo que no cumpla la condicion, se termina
         return false;
 	}
 	
 	static boolean esAVLlin(Arbol a){
-		boolean [] result = {true};
-		int altura = alturaBalanceado(a, result);
-		return result[0];
+		return alturaBalanceado(a) != -1;
 	}
 	
-	private static int alturaBalanceado(Arbol a, boolean[] result) {
+	private static int alturaBalanceado(Arbol a) {
 		if(a==null) return 0;
-		int altizq = alturaBalanceado(a.izq, result);
-		int altder = alturaBalanceado(a.der, result);
+		int altizq = alturaBalanceado(a.izq);
+		int altder = alturaBalanceado(a.der);
+		System.out.println(altizq);
+		System.out.println(altder);
 		
-		if(Math.abs(altizq-altder) > 1){
-			result[0] = false;
-		}
+		//Alguno de los hijos no es AVL
+		if (altizq == -1 || altder == -1) return -1;
+		
+		//En este nivel no se cumple que es ABB
+		if (!(  (a.izq == null || a.izq.valor < a.valor) && 
+        		(a.der == null || a.der.valor > a.valor))	) return -1;
+		
+		//En este nivel no se cumple que es AVL
+		if(Math.abs(altizq-altder) > 1) return -1;
 		
 		return 1 + Math.max(altizq, altder);
 	}
 
-	public int altura(){
-		if(this == null) return 0;
-		return 1 + Math.max(this.izq.altura(), this.der.altura());
+	public static int altura(Arbol a){
+		if(a == null) return 0;
+		return 1 + Math.max(altura(a.izq), altura(a.der));
+	}
+	
+	static public void main(String [] args) {
+		Arbol a = new Arbol(new Arbol(null, null, 4), new Arbol(null, null, 2), 3);
+		System.out.println(esAVLlin(a));
 	}
 }
