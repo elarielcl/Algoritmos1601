@@ -1,0 +1,16 @@
+- pag 2, "Provee una interfaz" en vez de "Provee de una interfaz"
+- pag 3, "manera consecutiva, es decir," en vez de "manera consecutiva es decir,", las operaciones terminan con comas o "y"
+- pag 4, Posicion está con tilde en buscar y buscarK
+- pag 5, Posicion depende de las implementación de la interfaz lo que rompe la encapsulación
+- pag 8, al print le falta cerrar un paréntesis
+- pag 12, se usa clase U
+- pag 13, se usa clase U
+- pag 17, "FileNotFoundException" en vez de "FileNoutFoundException", "extends" en vez de "extens"
+- pag 26, { debe estar antes del inicio del comentario
+- pag 27, "árbol" en vez de "arbol"
+- pag 29, "último" en vez de "ultimo", { debe estar antes de inicio del comentario
+- pag 32, nombres estandar son enqueue y dequeue
+- pag 33, se usa clase U
+- pag 46, comentarios están con #
+- pag 47, comentarios están con #, { debería estar antes del inicio del comentario, condición tener algún hijo es 2*j<=n
+- pag 48, "los" en vez de "lso", "memoria." en vez de "memoria"
