@@ -1,4 +1,7 @@
+
 public class DHeap {
+
+
 	private int[] heap;
 	private int largo;
 	private int d;
@@ -51,7 +54,7 @@ public class DHeap {
 			//si no, lo intercambio con el padre
 			heap[i] = heap[(i-1)/d];
 		}
-		//agregamos x en la posición correspondiente
+		//agregamos x en la posiciÃ³n correspondiente
 		heap[i] = x;
 		largo++;
 	}
@@ -72,7 +75,7 @@ public class DHeap {
 			//si el nodo no tiene hijos
 			if (hijo > largo) { break; }
 			
-			//encontrar el hijo mas pequeño
+			//encontrar el hijo mas pequeÃ±o
 			int j=1, hijoMin = hijo;
 			for(; j<d; j++) {
 				if (hijo+j == largo) break;
@@ -92,4 +95,19 @@ public class DHeap {
 		largo--;
 		return result;
 	}
+	
+	public static void main(String[] args) {
+		int [] a = {1, 5, 3, 7, 8, 2};
+		DHeap dh = new DHeap(3);
+		
+		for (int i = 0; i < a.length; i++)
+			dh.insertar(i);
+	
+		System.out.println("De mayor a menor!");
+		for (int i = 0; i < a.length; i++)
+			System.out.println(dh.extraerMin());
+
+	}
+
 }
+
