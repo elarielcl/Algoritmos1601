@@ -1,8 +1,8 @@
 public class Avl{
-	public static Nodo insertar(Nodo a, double x){
+	public static Nodo insertar(Nodo a, int x){
 		if( a == null)
 			return new Nodo(null, x, null);
-		Nodo b = Nodo a;
+		Nodo b = a;
 		if(x < b.info){
 			b = new Nodo(insertar(b.izq,x),b.info,b.der);
 			if( b.izq.altura() - b.der.altura()==2 ){
@@ -33,7 +33,7 @@ public class Avl{
 	}
 
 	private static Nodo rotateToRight(Nodo b) {
-		NodoInt n = b.der;
+		Nodo n = b.der;
 		if(n.izq == null){
 			Nodo ni = n.izq;
 			b.der = new Nodo(ni.izq, ni.info, ni.der);
