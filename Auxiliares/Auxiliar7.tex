@@ -1,0 +1,121 @@
+\documentclass[dcc,sol]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% COmpletar titulo
+\title{Auxiliar 6 - Árboles balanceados y Colas de Prioridad}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+
+
+%%CONVERSADAS EN REUNION PARA ESTE AUXILIAR
+
+%- Listas enlazadas
+%- Listas de doble enlace
+%- Invertir lista enlazada (nelson lo hizo)
+%- Clonar árbol
+%- Reflejar
+%- Ver si dos árboles tienen el mismo recorrido en inorden(armando listas), python(?)
+%- Multiplicación de matrices(nelson)
+%- Saber si lista es circular con un nodo
+%- Otros problemas
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+\begin{problems}
+\section*{Árboles balanceados}
+\problem Implemente el método \texttt{boolean esAVL(Arbol a)}, para esto, implemente el método \texttt{int altura(Arbol a)} y úselo para verificar la condición de AVL. ¿Cuál es la complejidad de este algoritmo?
+\begin{solution}
+En Arbol.java
+\end{solution}
+\problem Implemente el método \texttt{esAVL} de forma eficiente, calculando la altura a medida que va recorriendo el árbol. Pruebe que haciéndolo de esta manera se alcanza una complejidad $O(n)$
+\begin{solution}
+En Arbol.java
+\end{solution}
+\end{problems}
+\section*{Colas de Prioridad}
+\begin{problems}
+\problem Un heap $d-ario$ es un tipo de ``heap'', pero en el cual los nodos no hojas tienen $d$ hijos. Proponga una implementación de la clase \texttt{DHeap} que incluya inserción y extracción del menor.
+\begin{solution}
+En DHeap.java
+\end{solution}
+\problem Analice la complejidad de la inserción en un heap $d-ario$. ¿Cómo depende de $d$? ¿Existe algún valor óptimo?
+
+\begin{solution}
+Al cambiar la cantidad de hijos de los nodos esto trae 2 efectos, por una parte la altura del árbol se ve reducida dado que para representar n nodos solo se necesita un árbol de altura $\log_d{n}$, pero cada vez que se verifiquen los elementos de un mismo nivel se deberán hacer $d$ comparaciones.
+
+Veremos la complejidad dependiendo de $d$ para ambas operaciones:
+
+\begin{itemize}
+
+\item \textbf{Insertar}, un elemento nuevo se agrega al final y se compara sólo con el padre para ver si sube, en el peor caso debe subir la altura del árbol es decir $\log_d{n}$, es evidente que a medida que el d se hace más grande $\log_d{n}$ se hace más cercano a 0, luego para cualquier $d\geq n$ el costo es 1 (Sólo se compara con la raíz). \\
+
+\item \textbf{Extraer el mínimo}, la obtención y eliminación del mínimo cuesta $O(1)$ dado que está en el tope, sin embargo volver a la forma del heap debe para cada nivel encontrar el minimo del nivel y asignarlo como el nuevo padre. Esto entonces toma tiempo $T(n) = d\log_d{n}$. \\
+
+Para encontrar el mínimo podemos derivar con respecto a d e igualar a 0.
+
+\begin{equation*}
+    T(n) = \frac{d\ln{n}}{\ln{d}} \Rightarrow
+    T'(n) = \ln{n}\frac{\ln{d}-1}{\ln^2{d}} = 0
+\end{equation*}
+
+Asumiendo que $d>1$, luego $\ln{d} \neq 0$, se puede simplificar los terminos $\ln{n}$ y $\ln^2{d}$ y llegar a:
+
+\begin{equation*}
+    \ln{d}-1=0 \Rightarrow \ln{d} = 1 \Rightarrow d = e
+\end{equation*}
+
+Lo que indica que el tamaño óptimo es $e$, pero dado que $d$ debe ser entero se concluye que el óptimo es 3 (más cercano).
+
+\end{itemize}
+
+
+
+\end{solution}
+
+
+\end{problems}
+
+
+
+
+\end{document}
