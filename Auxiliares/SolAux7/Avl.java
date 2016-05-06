@@ -34,7 +34,7 @@ public class Avl{
 
 	private static Nodo rotateToRight(Nodo b) {
 		Nodo n = b.der;
-		if(n.izq == null){
+		if(n.izq != null){
 			Nodo ni = n.izq;
 			b.der = new Nodo(ni.izq, ni.info, ni.der);
 		}
@@ -55,7 +55,7 @@ public class Avl{
 
 	private static Nodo rotateToLeft(Nodo b) {		
 		Nodo n = b.izq;
-		if(n.der == null){
+		if(n.der != null){
 			Nodo nd = n.der;
 			b.izq = new Nodo(nd.izq, nd.info, nd.der);
 		}
