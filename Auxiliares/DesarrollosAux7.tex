@@ -1,0 +1,702 @@
+ \documentclass[dcc,sol]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\usepackage{tikz}
+
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% COmpletar titulo
+\title{Auxiliar 7 - Árboles balanceados}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+
+
+%%CONVERSADAS EN REUNION PARA ESTE AUXILIAR
+
+%- Listas enlazadas
+%- Listas de doble enlace
+%- Invertir lista enlazada (nelson lo hizo)
+%- Clonar árbol
+%- Reflejar
+%- Ver si dos árboles tienen el mismo recorrido en inorden(armando listas), python(?)
+%- Multiplicación de matrices(nelson)
+%- Saber si lista es circular con un nodo
+%- Otros problemas
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+
+\section*{Árboles Rojo-Negro}
+Los árboles Rojo-Negro son árboles de búsqueda binaria que cumplen las siguientes condiciones:
+\begin{itemize}
+    \item Cada nodo, además de su valor, tiene asociado un color el cual puede ser rojo o negro.
+    \item La raíz es negra.
+    \item Si un nodo es rojo, todos sus hijos deben ser negros.
+    \item Cualquier camino desde la raíz hasta una hoja debe contener la misma cantidad de nodos negros.
+\end{itemize}
+Además consideraremos en nuestra implementación de estos árboles que los nodos rojos son solo hijos izquierdos de algún nodo negro.\\
+
+\textbf{¿Por qué?}\\
+Porque de esta manera podemos relacionar cada árbol Rojo-Negro de nuestra implementación con un árbol 2-3.\\
+
+\textbf{¿Cómo?}\\
+Cada vez que aparezca la estructura :\\
+\begin{center}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(3,2)/D}, {(1,1)/B}, {(5,1)/E},
+                            {(0,0)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {D/B, D/E,B/A,B/C}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {B/1}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+\newpage
+Estaremos representando el nodo :
+\\
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{bplus}=[rectangle split, rectangle split horizontal,rectangle split ignore empty parts,draw]
+\tikzstyle{every node}=[bplus]
+\tikzstyle{level 1}=[sibling distance=60mm]
+\tikzstyle{level 2}=[sibling distance=15mm]
+\node {B \nodepart{two} D} [->]
+  child {node {A}} 
+  child {node {C}}
+  child {node {E}}
+;\end{tikzpicture}
+\end{center}
+\\
+Por otro lado, las estructuras con nodos  negros simplemente representan su correspondiente estructura 2-3 con nodos simples.\\
+
+\textbf{¿Y esta representación de que sirve?}\\
+En un árbol 2-3 los caminos desde la raíz hasta alguna hoja tienen todos el mismo número de nodos (simples o dobles). Cada nodo simple que se visite en el camino es un nodo negro en nuestro árbol y cada nodo doble que se visite corresponde a un nodo negro y uno rojo, por lo tanto en nuestra implementación de árbol Rojo-Negro se cumplirá que cualquier camino desde la raíz hasta una hoja contiene la misma cantidad de nodos negros.\\
+
+\textbf{Estrategia de inserción:}\\
+Para insertar un elemento en nuestro árbol Rojo-Negro haremos una inserción como si este fuese un árbol de Búsqueda Binaria, poniéndolo en un nodo de color rojo. \\
+\begin{itemize}
+\item El caso en que este se inserte como hijo izquierdo de un nodo negro no hemos roto ninguno de los invariantes de nuestro árbol.
+\item Casos problemáticos:
+\begin{enumerate}
+\item Hijo derecho de un nodo negro
+\begin{enumerate}[a)]
+\item Hermano negro
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(1,1)/B}, {(0,0)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {C/1}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\item Hermano rojo
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(1,1)/B}, {(0,0)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {A/1, C/2}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\end{enumerate}
+\newpage
+\item Hijo izquierdo de un nodo rojo
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(3,2)/D}, {(1,1)/B}, {(0,0)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {D/B, B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {A/1, B/2}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\item Hijo derecho de un nodo rojo
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(3,2)/D}, {(1,1)/B}, {(0,0)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {D/B, B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {C/1, B/2}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\end{enumerate}
+\end{itemize}
+
+Estos casos se dan al insertar un elemento al final del árbol y también se van dando a medida que se van reparando errores en niveles inferiores del mismo.\\
+Para reparar estos errores usaremos rotaciones e intercambio de colores y veremos que algunos casos se reducen a resolver otros.\\
+
+\textbf{Operaciones para tratar los casos anteriores}\\
+Primero, el caso 1. a) es simple de resolver, pues con una rotación simple el árbol queda como :\\
+\begin{center}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(1,1)/B}, {(0,0)/A}, {(2,2)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {B/1}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\end{center}
+Y el árbol vuelve a ser Rojo-Negro a este nivel según nuestra implementación.\\
+
+Para el caso 1. b) se realizará un intercambio de colores, de esta manera el árbol queda como :
+\begin{center}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(1,1)/B}, {(0,0)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {B/1}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\end{center}
+Volviendo a ser árbol Rojo-Negro a este nivel según nuestra implementación.\\
+
+Por otro lado, el caso 2. al hacer una rotación simple obtenemos: \\
+\begin{center}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(3,1)/D}, {(1,2)/B}, {(0,1)/A}, {(2,0)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {D/B, D/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {A/1, D/2}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\end{center}
+El cual se reduce al caso 1. b).\\
+
+Finalmente, si nos encontramos en el caso 3. y hacemos una rotación simple sobre ``B'' obtenemos:\\
+\begin{center}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(3,3)/D}, {(1,1)/B}, {(0,0)/A}, {(2,2)/C}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {D/C, B/C, B/A}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {C/1, B/2}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
+\end{center}
+Lo que se reduce al caso 2.
+\newpage
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+%\begin{frame}
+%\frametitle{Prim's algorithm}
+
+%% Adjacency matrix of graph
+%% \  a  b  c  d  e  f  g
+%% a  x  7     5
+%% b  7  x  8  9  7
+%% c     8  x     5
+%% d  5  9     x 15  6
+%% e     7  5 15  x  8  9
+%% f           6  8  x 11
+%% g              9  11 x
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%\begin{figure}}}}}}}}}}}}}}}}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(3,4)/D}, {(1,2)/B}, {(5,2)/F},
+                            {(0,0)/A}, {(2,0)/C}, {(4,0)/E}, {(6,0)/G}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {D/B, D/F,B/A,B/C,
+                                         F/E, F/G}
+        \path[edge] (\source) -- (\dest);
+    
+    
+    % Start animating the vertex and edge selection. 
+    % Red nodes
+    \foreach \vertex / \fr in {A/1}
+        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels. 
+    %\begin{pgfonlayer}{background}
+    %    \pause
+    %    \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+    %        \path<+->[selected edge] (\source.center) -- (\dest.center);
+    %    \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+    %        \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+    %\end{pgfonlayer}
+\end{tikzpicture}
+%\end{figure}
+
+%\end{frame}
