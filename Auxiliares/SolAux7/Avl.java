@@ -4,7 +4,7 @@ public class Avl{
 			return new Nodo(null, x, null);
 		Nodo b = a;
 		if(x < b.info){
-			b = new Nodo(insertar(b.izq,x),b.info,b.der);
+			b.izq = insertar(b.izq,x);
 			if( b.izq.altura() - b.der.altura()==2 ){
 				if( x < b.izq.info )
 					b = rotateToLeft( b ); /* Caso 1 */
@@ -13,7 +13,7 @@ public class Avl{
 			}
 		}
 		else if(x > b.info){
-			b = new Nodo(b.izq, b.info, insertar(b.der, x));
+			b.der = insertar(b.der, x);
 			if(b.der.altura() - b.izq.altura() == 2){
 				if(x > b.der.info)
 					b = rotateToRight( b ); /* Caso 4 */
@@ -25,44 +25,26 @@ public class Avl{
 	}
 
 	private static Nodo doubleToRight(Nodo b) {
-		Nodo n = rotateToLeft(b.der);
-		b.der = new Nodo(n.izq, n.info, n.der);
-		n = rotateToRight(b);
-		b = new Nodo(n.izq, n.info, n.der);
-		return b;
+		b.der = rotateToLeft(b.der);
+		return rotateToRight(b);
 	}
 
-	private static Nodo rotateToRight(Nodo b) {
-		Nodo n = b.der;
-		if(n.izq != null){
-			Nodo ni = n.izq;
-			b.der = new Nodo(ni.izq, ni.info, ni.der);
-		}
-		else
-			b.der = null;
-        n.izq = new Nodo(b.izq, b.info, b.der);
-        b = new Nodo(n.izq, n.info, n.der);
-		return b;
+	private static Nodo rotateToRight(Nodo padre) {
+		Nodo hijo = padre.der;
+		padre.der = hijo.izq;
+		hijo.izq = padre;
+		return hijo;
 	}
 
 	private static Nodo doubleToLeft(Nodo b){
-		Nodo n = rotateToRight(b.izq);
-		b.izq = new Nodo(n.izq, n.info, n.der);
-		n = rotateToLeft(b);
-		b = new Nodo(n.izq, n.info, n.der);
-        return b;
+		b.izq = rotateToRight(b.izq);
+		return rotateToLeft(b);
 	}
 
-	private static Nodo rotateToLeft(Nodo b) {		
-		Nodo n = b.izq;
-		if(n.der != null){
-			Nodo nd = n.der;
-			b.izq = new Nodo(nd.izq, nd.info, nd.der);
-		}
-		else
-			b.izq = null;
-		n.der = new Nodo(b.izq, b.info, b.der);
-		b = new Nodo(n.izq, n.info, n.der);
-		return b;
+	private static Nodo rotateToLeft(Nodo padre) {		
+		Nodo hijo = padre.izq;
+		padre.izq = hijo.der;
+		hijo.der = padre;
+		return hijo;
 	}
 }
