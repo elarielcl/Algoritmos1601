@@ -8,7 +8,7 @@ public class NodoSkipList {
 			if (l.sigs[i].info == x) return true;
 			else if (l.sigs[i].info < x) { //Si este nodo es menor que lo que busco, sigo buscando después de el
 				l = l.sigs[i];
-				i = l.n + 1;
+				i = l.n + 1; //Pues el for disminuye el contador para la siguiente iteración
 			}
 		}
 		return l.info == x;
