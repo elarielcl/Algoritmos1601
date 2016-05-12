@@ -1,0 +1,83 @@
+\documentclass[dcc,sol]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% COmpletar titulo
+\title{Auxiliar 8 - Splay tree y Skip List}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+
+\section*{Splay tree}
+\begin{problems}
+\problem Un Splay tree es un árbol de búsqueda auto-ajustable en el cual cada vez que un elemento $x$ es insertado, tras encontrar su lugar como en un ABB cualquiera es llevado hasta la raíz mediante rotaciones. Se le pide que para las siguientes secuencias de datos, dibuje cómo quedan las inserciones elemento a elemento:
+\begin{itemize}
+    \item 5, 10, 2, 8, 7, 3, 6, 4
+    \item 1, 2, 3, 4, 5, 6, 7, 8
+\end{itemize}
+\end{problems}
+
+\section*{Skip List}
+\begin{problems}
+\problem Una implementación de Skip Lists es al siguiente:
+
+\begin{lstlisting}[language=Java]
+class NodoSkipList {
+    double info;
+    NodoSkipList[] sigs = new NodoSkipList[N];
+    int n;
+}
+\end{lstlisting}
+
+En esta definición, \texttt{info} muestra el contenido del nodo, y las referencias a los siguientes nodos están en el arreglo \texttt{sigs} de las cuales son válidas sólo las primeras \texttt{n}, además los saltos están ordenados del más largo al más corto, siendo el que está en la posición \texttt{n} el más largo.\\
+
+Se pide implementar el método \texttt{public static boolean buscar(double x, NodoSkipList l)} que dado un valor x y un nodo inicial de una skip list retorna true si el elemento está en la lista. Indique la complejidad de esta operación y compárela con otras implementaciones de diccionario vistas. \\
+
+\textbf{Nota:} Suponga que N es suficientemente grande para representar bien la skip list (no debe preocuparse de este parámetro).
+
+\end{problems}
+
+
+
+\end{document}
