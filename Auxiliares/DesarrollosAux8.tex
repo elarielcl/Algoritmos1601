@@ -1,0 +1,499 @@
+ \documentclass[dcc,sol]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\usepackage{tikz}
+
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% COmpletar titulo
+\title{Auxiliar 8 - Splay tree y Skip List}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+\section*{Splay tree}
+\begin{problems}
+\problem Inserción de secuencia $5, 10, 2, 8, 7, 3, 6, 4$
+\begin{solution}
+
+\subsection*{Inserción $5$}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$5$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}
+\end{tikzpicture}
+
+\subsection*{Inserción $10$}
+
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$5$}
+  child {node [circle,draw] {$10$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$10$}
+  child {node [circle,draw] {$5$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+
+\subsection*{Inserción $2$}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$10$}
+  child {node [circle,draw] {$5$}
+    child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [square,draw] {}}
+  }
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+\\Segunda Transformación\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$2$}
+  child {node [square,draw] {}}
+  child {node [circle,draw] {$5$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  ;
+\end{tikzpicture}
+\end{solution}
+
+
+\subsection*{Inserción 8}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$2$}
+  child {node [square,draw] {}}
+  child {node [circle,draw] {$5$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$10$}
+        child {node [circle,draw] {$8$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}}
+  ;
+\end{tikzpicture}
+\\Primera Transformación\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$2$}
+  child {node [square,draw] {}}
+  child {node [circle,draw] {$8$}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+        }
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$8$}
+  child {node [circle,draw] {$2$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+  ;
+\end{tikzpicture}
+
+\subsection*{Inserción 7}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$8$}
+  child {node [circle,draw] {$2$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$7$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}}}
+  child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+  ;
+\end{tikzpicture}
+\\Segunda Transformación\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$8$}
+  child {node [circle,draw] {$7$}
+    child {node [circle,draw] {$5$}
+        child {node [circle,draw] {$2$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}
+    child {node [square,draw] {}}}
+  child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$7$}
+  child {node [circle,draw] {$5$}
+    child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [square,draw] {}}}
+  child {node [circle,draw] {$8$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  ;
+\end{tikzpicture}
+
+\subsection*{Inserción 3}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$7$}
+  child {node [circle,draw] {$5$}
+    child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$3$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}}
+    child {node [square,draw] {}}}
+  child {node [circle,draw] {$8$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  ;
+\end{tikzpicture}
+\\Primera Transformación\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$7$}
+  child {node [circle,draw] {$3$}
+    child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  child {node [circle,draw] {$8$}
+    child {node [square,draw] {}}
+    child {node [circle,draw] {$10$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$3$}
+  child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+  child {node [circle,draw] {$7$}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$8$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$10$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}}}
+  ;
+\end{tikzpicture}
+
+\subsection*{Inserción 6}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$3$}
+  child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+  child {node [circle,draw] {$7$}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$6$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}}
+    child {node [circle,draw] {$8$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$10$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}}}
+  ;
+\end{tikzpicture}
+\\Primera Transformación\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$3$}
+  child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+  child {node [circle, draw] {$6$}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$7$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$8$}
+            child {node [square,draw] {}}
+            child {node [circle,draw] {$10$}
+                child {node [square,draw] {}}
+                child {node [square,draw] {}}}}}
+  }
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$6$}
+  child {node [circle,draw] {$3$}
+    child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  child {node [circle,draw] {$7$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$8$}
+            child {node [square,draw] {}}
+            child {node [circle,draw] {$10$}
+                child {node [square,draw] {}}
+                child {node [square,draw] {}}}}}
+  ;
+\end{tikzpicture}
+
+
+\subsection*{Inserción 4}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$6$}
+  child {node [circle,draw] {$3$}
+    child {node [circle,draw] {$2$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$5$}
+        child {node [circle,draw] {$4$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}}
+  child {node [circle,draw] {$7$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$8$}
+            child {node [square,draw] {}}
+            child {node [circle,draw] {$10$}
+                child {node [square,draw] {}}
+                child {node [square,draw] {}}}}}
+  ;
+\end{tikzpicture}
+\\Primera Transformación\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$6$}
+  child {node [circle,draw] {$4$}
+    child {node [circle,draw] {$3$}
+        child {node [circle,draw] {$2$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}
+    child {node [circle,draw] {$5$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}}
+  child {node [circle,draw] {$7$}
+        child {node [square,draw] {}}
+        child {node [circle,draw] {$8$}
+            child {node [square,draw] {}}
+            child {node [circle,draw] {$10$}
+                child {node [square,draw] {}}
+                child {node [square,draw] {}}}}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$4$}
+  child {node [circle,draw] {$3$}
+        child {node [circle,draw] {$2$}
+            child {node [square,draw] {}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}
+  child {node [circle,draw] {$6$}
+      child {node [circle,draw] {$5$}
+         child {node [square,draw] {}}
+         child {node [square,draw] {}}}
+      child {node [circle,draw] {$7$}
+            child {node [square,draw] {}}
+            child {node [circle,draw] {$8$}
+                child {node [square,draw] {}}
+                child {node [circle,draw] {$10$}
+                    child {node [square,draw] {}}
+                    child {node [square,draw] {}}}}}}
+  
+  ;
+\end{tikzpicture}
+
+
+
+\problem Inserción de secuencia $1, 2, 3, 4, 5, 6, 7, 8$
+\begin{solution}
+\subsection*{Inserción $1$}
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$1$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}
+\end{tikzpicture}
+
+
+\subsection*{Inserción $2$}
+
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$1$}
+  child {node [circle,draw] {$2$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$2$}
+  child {node [circle,draw] {$1$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+
+\subsection*{Inserción $3$}
+
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$2$}
+  child {node [circle,draw] {$1$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  child {node [circle,draw] {$3$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$3$}
+  child {node [circle,draw] {$2$}
+    child {node [circle,draw] {$1$}
+        child {node [square,draw] {}}
+        child {node [square,draw] {}}}
+    child {node [square,draw] {}}}
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+\\Así sucesivamente $\ldots$\\
+
+\subsection*{Inserción $8$}
+
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$7$}
+  child {node [circle,draw] {$6$}
+    child {node [circle,draw] {$5$}
+        child {node [circle,draw] {$4$}
+            child {node [circle,draw] {$3$}
+                child {node [circle,draw] {$2$}
+                    child {node [circle,draw] {$1$}
+                        child {node [square,draw] {}}
+                        child {node [square,draw] {}}}
+                    child {node [square,draw] {}}}
+                child {node [square,draw] {}}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}
+    child {node [square,draw] {}}}
+  child {node [circle,draw] {$8$}
+    child {node [square,draw] {}}
+    child {node [square,draw] {}}}
+  ;
+\end{tikzpicture}
+\\Rotación Simple\\
+\begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+\node [circle,draw] {$8$}
+  child {node [circle,draw] {$7$}
+    child {node [circle,draw] {$6$}
+        child {node [circle,draw] {$5$}
+            child {node [circle,draw] {$4$}
+                child {node [circle,draw] {$3$}
+                    child {node [circle,draw] {$2$}
+                        child {node [circle,draw] {$1$}
+                            child {node [square,draw] {}}
+                            child {node [square,draw] {}}}
+                        child {node [square,draw] {}}}
+                    child {node [square,draw] {}}}
+                child {node [square,draw] {}}}
+            child {node [square,draw] {}}}
+        child {node [square,draw] {}}}
+    child {node [square,draw] {}}}
+  child {node [square,draw] {}}
+  ;
+\end{tikzpicture}
+\end{solution}
+\newpage
+\section*{Skip List}
+\begin{problems}
+\problem  \texttt{public static boolean buscar(double x, NodoSkipList l)}
+\begin{solution}
+En NodoSkipList.java\\
+Costos de búsquedas en estructuras con $n$ elementos:
+\begin{itemize}
+    \item Promedio en ABB $\Rightarrow \mathcal{O}(\log n)$
+    \item Peor caso en AVL $\Rightarrow \mathcal{O}(\log n)$
+    \item Peor caso en 2-3/Rojo-Negro $\Rightarrow \mathcal{O}(\log n)$
+    \item Amortizado en Splay tree $\Rightarrow \mathcal{O}(\log n)$
+    \item La búsqueda en Skip List es una búsqueda binaria, por lo que el costo es $\Rightarrow \mathcal{O}(\log n)$ en el peor caso
+\end{itemize}
+\end{solution}
+\end{problems}
+\end{document}
+
+
+
+
