@@ -1,10 +1,8 @@
 
 public class FuncionesHash {
 	
-	static final int M = 37;
-	static final int P = 31;
-	static int [] integerHashTable = new int[M];
-	static String [] stringHashTable = new String[M];
+	static final int M = Integer.MAX_VALUE;
+	static final int P = 31; //Java usa 31 para el hashcode
 	
 	static public int hash(int n) {
 		return (n & 0x7fffffff) % M;
@@ -22,6 +20,7 @@ public class FuncionesHash {
 		System.out.println(hash("Sebastian"));
 		System.out.println(hash("Ariel"));
 		System.out.println(hash("Sergio"));//Colision con Ariel :O
+		System.out.println("Sergio".hashCode());
 	}
 
 }
