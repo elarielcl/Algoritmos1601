@@ -1,0 +1,124 @@
+\documentclass[dcc,sol]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{epstopdf}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+\title{Auxiliar 9 - Hashing}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+\section*{Funciones de Hash}
+\begin{problems}
+\problem Implemente una función de hash que mapee un entero a un índice de tabla Java de $M$ elementos.
+\problem Utilice la función anterior para crear un función de hash que mapee un String a un índice de la tabla Java de $M$ elementos.
+\end{problems}
+
+\section*{Hashing con encadenamiento}
+\begin{problems}
+\problem Una tabla de hashing con encadenamiento es un tipo de hashing en donde para solucionar el problema de las colisiones se utilizan listas enlazadas, es decir el valor asociado a una llave no es el valor insertado sino una lista cuyos nodos contienen los valores. Si ocurre una colisión se inserta el nuevo nodo a la lista enlazada correspondiente. Implemente las operaciones para crear, insertar y contiene elementos en esta estructura de datos.
+\end{problems}
+
+\section*{Cuckoo Hashing}
+\begin{problems}
+
+
+\problem Los pájaros cucú son conocidos por utilizar nidos ajenos para poner sus huevos, botando los huevos de su dueño. Siguiendo esta lógica, el \textit{Cuckoo Hashing} usa dos tablas, una primaria y una secundaria ($T_1$ y $T_2$), cada una con su propia función de hash $h_1$ y $h_2$, respectivamente. El invariante que mantiene que este método consite en que un elemento $x$ que está en la tabla \textbf{siempre} se encuentra en $T_1[h_1(x)]$ o en $T_2[h_2(x)]$.\\
+
+Con esta información describa los algoritmos de :
+\begin{enumerate}[a)]
+    \item Búsqueda
+    \item Eliminación
+    \item Inserción \\\textbf{Hints:} Analice el nombre del método y mantenga el invariante al insertar. \\Discuta si su método de inserción propuesto es correcto, si no lo es modifíquelo para que lo sea.
+\end{enumerate}
+
+\newpage
+
+{\textbf{\Large{Cuckoo Hashing}}}
+
+\vspace{-1ex}
+\begin{enumerate}[a)]
+\item \textbf{Búsqueda}: Dado el invariante de la estructura un elemento x, si se insertó sólo puede estar en las posiciones $T_1[h_1(x)]$ o en $T_2[h_2(x)]$. Luego basta con comparar los elementos de ambas tablas con x, en caso que alguno de ellos sea efectivamente x entonces se debe devolver \texttt{true}, de lo contrario se devuelve \texttt{false}.
+
+\begin{lstlisting}
+boolean buscar(int x){
+    return T1[h1(x)] == x || T2[h2(x)] == x;
+}
+\end{lstlisting}
+
+\item \textbf{Eliminación}: Se busca x en las 2 posibles posiciones en las que puede estar, si se encuentra entonces se reemplaza por algún valor que indique vacío (por ejemplo \texttt{null}).
+
+\begin{lstlisting}
+void eliminar(int x){
+    if(T1[h1(x)] == x)
+        T1[h1(x)] = null;
+    else if(T2[h2(x)] == x)
+        T2[h2(x)] = null;
+}
+\end{lstlisting}
+
+\item \textbf{Inserción}: Siguiendo la misma lógica que los pájaros cucú, se inserta x en la primera tabla, si el espacio estaba disponible entonces se termina, si no se toma el elemento que estaba en esa posición y se intenta insertar usando este mismo algoritmo pero en la otra tabla. Esto podría eventualmente llegar a un loop infinito, este caso se puede evitar fijando una cota máxima para las inserciones, en caso que la cantidad de inserciones supere esta cota entonces se entrega un error*.
+
+\begin{lstlisting}
+void insertar(int x){
+    int y;
+    for(int iters = 0; iters < MAX_ITERS; iters++){
+        y = T1[h1(x)];
+        T1[h1(x)] = x;
+        if(y==null) return;
+        x = T2[h2(y)];
+        T2[h2(y)] = y;
+        if(x==null) return;
+    }
+    error("Maximo de iteraciones alcanzado");
+}
+\end{lstlisting}
+
+
+\textbf{Notas:} Las implementaciones anteriores están en \textit{pseudocódigo}, sin embargo debería resultar simple pasar a su versión funcional en Java. El verdadero algoritmo de cuckoo hashing al pasar el máximo de iteraciones realiza o bien una re-asignación de todas las llaves en las tablas usando otras funciones de hash, o un re-escalamiento a tablas de mayor tamaño.
+
+\end{enumerate}
+
+
+\end{problems}
+
+\end{document}
