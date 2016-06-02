@@ -1,0 +1,160 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage[nocenter]{qtree}
+
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.7,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{language=Java, style=mystyle}
+\title{Tarea 6: Comparación de algoritmos de ordenación}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+\vspace{-2ex}
+\begin{center}
+Fecha de Entrega: 20 de Junio  23:59hrs \\
+\end{center}
+
+
+\section{Introducción}
+
+%% Explicación de la tarea
+El objetivo de esta tarea es comparar empíricamente los tiempos de ejecución de diferentes algoritmos de ordenación basados en comparación vistos en el curso.
+
+En particular pretendemos investigar la diferencia entre:
+\begin{itemize}
+\item Algoritmos $\mathcal{O}(n^2)$  y $\mathcal{O}(n \log n)$ .
+\item Diferentes algoritmos $\mathcal{O}(n \log n)$.
+\item Diferentes variantes del algoritmo QuickSort.
+\end{itemize}
+
+Para esto utilizaremos los algoritmos InsertionSort, MergeSort y 3 variantes de QuickSort, aplicados sobre arreglos de enteros de $n$ elementos que contienen una permutación al azar de $\lbrace 1, 2, \ldots , n \rbrace$.
+%% Explicación de los tres algoritmos de ordenación
+\subsection*{InsertionSort}
+Este algoritmo mantiene un subconjunto de elementos ordenados y va ``insertando'' los elementos fuera de este conjunto, de esta manera el algoritmo logra ordenar todos los elementos.\\
+Mas concretamente el algoritmo mantiene como invariante que los primeros $i$ elementos del arreglo están ordenados entre ellos, agrega el siguiente elemento del arreglo (rompiendo eventualmente el invariante) y repara el invariante ``insertando'' el nuevo elemento.\\
+El número de comparaciones del algoritmo es $\mathcal{O}(n^2)$.
+
+\subsection*{MergeSort}
+Este algoritmo separa el conjunto a ordenar en dos subconjuntos de tamaño similar, ordena estos subconjuntos por separado para luego ordenar el conjunto total en un proceso denominado ``merge'' de estos subconjuntos.\\
+Mas concretamente este algoritmo divide el arreglo en 2 mitades, ordena recursivamente cada una de estas mitades y las combina haciendo un ``merge'' de estas.\\
+El número de comparaciones del algoritmo es $\mathcal{O}(n \log n)$.
+
+\subsection*{QuickSort}
+Este algoritmo elige un elemento del conjunto a ordenar denominado ``pivote'', generando un subconjunto de elementos menores al pivote y otro de elementos mayores al pivote en un proceso denominado ``particionar'', para finalmente ordenar cada uno de estos subconjuntos.\\
+Mas concretamente estudiaremos 3 variantes incrementales de este algoritmo que tienen un número de comparaciones de $\mathcal{O}(n \log n)$ en el caso promedio.
+\subsubsection*{Método clásico}
+Para ordenar el arreglo se elige un ``pivote'' al azar poniendo los elementos menores al pivote a la izquierda del arreglo y los mayores a la derecha, ordenando recursivamente cada uno de los subarreglos generados.
+\subsubsection*{Mediana de tres}
+Análogo al método clásico, con la excepción que el ``pivote'' se escoge como la mediana de tres elementos escogidos al azar.
+\subsubsection*{Mediana de tres e InsertionSort}
+Análogo al método mediana de tres, excepto que la recursión del algoritmo se detiene cuando se quiere ordenar un arreglo de tamaño menor a $M$ (en esta tarea usaremos $M=10$). Finalmente como este algoritmo no deja ordenado el arreglo, al final se aplica el algoritmo InsertionSort.
+
+\section{Implementación}
+Su trabajo consiste en implementar los cinco algoritmos de ordención : InsertionSort, MergeSort, QuickSort (método clásico), QuickSort (mediana de tres), QuickSort (Mediana de tres e InsertionSort) previamente explicados.\\
+
+Para realizar esto se espera que entregue cinco clases que implementen la siguiente interfaz, con cada uno de los algoritmos anteriores :
+\begin{center}
+\begin{lstlisting}
+public interface Ordenacion {
+ 	public void ordenar(int[] a);
+}
+\end{lstlisting}
+\end{center}
+
+\section{Experimentación}
+Una vez implementados los algoritmos de ordenación, se le pide que compare los tiempos de ejecución de estos, para lo cual tenga en cuenta lo siguiente :
+\begin{itemize}
+\item Ejecute las pruebas en un solo computador y especifique en su informe las características de este que usted considere pertinentes.
+\item Solo mida el tiempo del algoritmo y no el de otras operaciones (como la creación de las permutaciones), sea cuidadoso con esto pues sus mediciones se podrían ver alteradas.
+\item Para los algoritmos de $\mathcal{O} (n \log n)$  se recomienda considerar $n \in \lbrace 10^7 , \ldots, 10^8\rbrace$.
+\item Para InsertionSort se recomienda considerar $n \in \lbrace 5 \cdot 10^4 , \ldots, 3 \cdot 10^5\rbrace$, luego interpole los tiempos obtenidos y obtenga los valores correspondientes en el intervalo $[10^7, 10^8]$ (para comparar con los tiempos obtenidos para los algoritmos de $\mathcal{O} (n \log n)$).
+\item Para generar las permutaciones al azar utilice la siguiente función que dado un $n$ retorna un arreglo que contiene una permutación al azar de $\lbrace 1, 2 , \ldots, n\rbrace$:
+\begin{lstlisting}
+import java.util.Random;
+...
+static public int[] permutacion(int n) {
+	 	int[] a = new int[n];
+	 	for (int i = 0; i < n; ++i)
+	 		a[i] = i+1;
+	 	
+	 	Random rnd = new Random();
+	    for (int i = 0; i < n; i++) {
+	        int r = i + rnd.nextInt(n-i);
+	        int temp = a[i];
+	        a[i] = a[r];
+	        a[r] = temp;
+	    }
+	    return a;
+}
+\end{lstlisting}
+
+\end{itemize}
+Con los datos obtenidos realice gráficos que le ayuden a comparar la \textit{performance} de los diferentes algoritmos, en particular preocúpese de que sus gráficos :
+\begin{itemize}
+\item Muestren el comportamiento asintótico correspondiente de cada algoritmo.
+\item Permitan diferenciar :
+\begin{itemize}
+\item InsertionSort de algún algortimo de $\mathcal{O} (n \log n)$.
+\item MergeSort de QuickSort.
+\item Las distintas versiones de QuickSort.
+\end{itemize}
+\end{itemize} 
+\newpage
+\section{Condiciones de Entrega}
+%%Ver esto comparado a otras tareas
+\begin{itemize}
+    \item Esta tarea debe ser resuelta en Java.
+    \item Es obligatorio la entrega de un informe en formato pdf junto con su tarea (Ver siguiente sección).
+    \item Esta tarea es de carácter individual, cualquier caso de copia se evaluará con la nota mínima.
+    \item No olvide subir a U-cursos todos los archivos necesarios para que su tarea funcione correctamente.
+    \item Debe subir los archivos de código fuente (*.java). Los archivos compilados (*.class) no serán evaluados.
+    \item Cualquier duda respecto a la tarea puede ser consultada usando el foro del curso.
+    \item \textbf{NO} se aceptarán atrasos.
+\end{itemize}
+\section{Informe}
+El informe debe describir el trabajo realizado, la solución implementada, los resultados obtenidos y las conclusiones o interpretaciones de estos. Principalmente debe ser breve, describiendo cada uno de los puntos que a continuación se indican:
+\begin{itemize}
+\item \textbf{Portada:} Indicando número de la tarea, fecha, autor, email, código del curso, etc.
+\item \textbf{Introducción:} Descripción breve del problema y su solución.
+\item \textbf{Análisis del Problema:} Exponga en detalle el problema, los supuestos que pretende ocupar, casos de borde y brevemente la metodología usada para resolverlo. Indique también sus hipótesis preliminares.
+\item \textbf{Solución del Problema:} Indique claramente los pasos que siguió para llegar a la solución del problema. Muestre mediante figuras y ejemplos qué es lo que realiza su código. Evite copiar todo el código fuente en el informe, sin embargo, puede mostrar las partes relevantes de éste.
+\item \textbf{Resultados y Conclusiones:} Muestre los gráficos realizados y utilícelos para ilustrar sus conclusiones. Sea detallado en explicar qué partes indican tendencias en complejidad. Sea riguroso en las visualizaciones: verifique que los datos representados se ajusten a los datos obtenidos y no a lo que ud. espera mostrar.
+\end{itemize}
+\end{document}
