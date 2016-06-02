@@ -104,7 +104,7 @@ Una vez implementados los algoritmos de ordenación, se le pide que compare los 
 \item Ejecute las pruebas en un solo computador y especifique en su informe las características de este que usted considere pertinentes.
 \item Solo mida el tiempo del algoritmo y no el de otras operaciones (como la creación de las permutaciones), sea cuidadoso con esto pues sus mediciones se podrían ver alteradas.
 \item Para los algoritmos de $\mathcal{O} (n \log n)$  se recomienda considerar $n \in \lbrace 10^7 , \ldots, 10^8\rbrace$.
-\item Para InsertionSort se recomienda considerar $n \in \lbrace 5 \cdot 10^4 , \ldots, 3 \cdot 10^5\rbrace$, luego interpole los tiempos obtenidos y obtenga los valores correspondientes en el intervalo $[10^7, 10^8]$ (para comparar con los tiempos obtenidos para los algoritmos de $\mathcal{O} (n \log n)$).
+\item Para InsertionSort se recomienda considerar $n \in \lbrace 5 \cdot 10^4 , \ldots, 3 \cdot 10^5\rbrace$, luego, con los datos obtenidos realice una interpolación cuadrática buscando la curva que se ajusta mejor localmente para luego evaluarla en el intervalo $[10^7, 10^8]$ (y así comparar con los tiempos obtenidos para los algoritmos de $\mathcal{O} (n \log n)$).
 \item Para generar las permutaciones al azar utilice la siguiente función que dado un $n$ retorna un arreglo que contiene una permutación al azar de $\lbrace 1, 2 , \ldots, n\rbrace$:
 \begin{lstlisting}
 import java.util.Random;
