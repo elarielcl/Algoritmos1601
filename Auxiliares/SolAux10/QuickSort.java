@@ -13,7 +13,7 @@ public class QuickSort {
         sort(a, lo, k-1);
         sort(a, k+1, hi);
     }
-
+    
     static void swap(int[] a, int i, int j){
         int temp = a[i];
         a[i] = a[j];
@@ -55,14 +55,15 @@ public class QuickSort {
         //Eleccion del pivote
         int ip = new Random().nextInt(hi-lo+1) + lo;
         swap(a,lo,ip);
-
+        int p = a[lo];
+        
         //En j se guardara la posicion final del pivote
         int j = lo;
 
         //Se recorre el arreglo de izquierda a derecha
         for (int i = lo + 1; i <= hi; i++) {
             //Si algun elemento es menor que el pivote, se pone en la posición anterior del pivote y se aumenta en 1 la posicion final del pivote
-            if(a[i]<a[lo]){
+            if(a[i]<p){
                 j++;
                 swap(a,i,j);
             }
@@ -79,12 +80,11 @@ public class QuickSort {
         //Eleccion del pivote
         int ip = new Random().nextInt(hi-lo+1) + lo;
         swap(a,lo,ip);
-
         int p = a[lo];
 
         // Significado de variables
-        //  [ v |---- < v --- | -- = v ---| --- ??? --- | --- > v ----]
-        // lo--lo+1-----------i-----------k-------------j------------hi
+        //  [ p |---- < p --- | -- = p ---| --- ??? --- | --- > p ----]
+        // lo--lo+1------------i-----------k-------------j------------hi
         int i = lo + 1;
         int j = hi;
         int k = lo + 1;
@@ -96,12 +96,12 @@ public class QuickSort {
                 k++;
             }
 
-            while(a[k] == p){
+            while(a[k] == p){ 
                 if (k == hi) break;
                 k++;
             }
 
-            while (p < a[j]) {
+            while (p < a[j]) { 
                 if (j == lo) break;
                 j--;
             }
@@ -109,13 +109,38 @@ public class QuickSort {
             if (k >= j) break;
 
             swap(a,k,j);
-            if(a[k]!=p)
+            if(a[k]!=p) {
                 swap(a,k,i);
+                ++i;
+                ++k;
+            }
         }
+        
         // Poner el pivote en su posicion
-        swap(a,lo,j);
-
+        swap(a,lo,i);
+        
         return j;
+    }
+    
+    //Otra implementacion de c) y considerando optimizacion
+    static void sortMejorado(int[] a, int lo, int hi) {
+    	if (hi <= lo) return;
+    	
+        //Eleccion del pivote
+        int ip = new Random().nextInt(hi-lo+1) + lo;
+        swap(a,lo,ip);
+        int p = a[lo];
+
+        int lt = lo, gt = hi;
+        int i = lo;
+        while (i <= gt) {
+            if      (a[i] < p) swap(a, lt++, i++);
+            else if (a[i] > p) swap(a, i, gt--);
+            else              i++;
+        }
+ 
+        sortMejorado(a, lo, lt-1);
+        sortMejorado(a, gt+1, hi);
     }
 
     public static void main(String[] args) {
@@ -124,16 +149,11 @@ public class QuickSort {
         System.out.println(Arrays.toString(a));
 
 
-		//Para c))
-		final int[] b = {2, 1, 3, 2, 3, 2, 3, 1, 1};
-		quickSort(b);
+		//Para c)) con sort optimizado para las repeticiones
+		final int[] b = {3, 1, 2, 3, 3, 2, 3, 1, 1,2,3,2,3,1,1,1,2,3,2,1,2,1,1,2,2,2};
+		sortMejorado(b, 0, b.length-1);
 		System.out.println(Arrays.toString(b));
-
-
     }
-
-
-
-
 }
+
 
