@@ -1,0 +1,80 @@
+\documentclass[dcc,sol]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts,setspace}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{porange}{rgb}{0.9,0.5,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{porange},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pgreen},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\newenvironment{codebox} {\small \ttfamily \obeylines \begingroup \setstretch{-2.4}} {\endgroup}
+
+% COmpletar titulo
+\title{Auxiliar 11 - Grafos}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+%% En catedras se vio :
+%% Quick Sort, dos formas, mediana de tres conjuntos chicos por inserción, solo un caso se ordena 
+%%recursivamente la parte mas chica y la otra iterativa
+
+%% Problemas propuestos en reunión:
+%% - Programación de las maneras de quicksort, profiling de las version
+%% - Merge Sort
+
+
+\begin{document}
+\maketitle
+
+\vspace{-1ex}
+
+
+\begin{problems}
+\problem \textbf{Árboles}
+
+Un grafo $G$ se dice que es un árbol si posee las siguientes dos propiedades :
+\begin{itemize}
+    \item Es acíclico, es decir, no existen caminos en el grafo que sin repetir arcos vuelvan al nodo inicial.
+    \item Es conexo, es decir, entre cualquier par de nodos en el grafo existe una camino entre ellos.
+\end{itemize}
+Programe la función, \texttt{esArbol} que dado un grafo representado por sus listas de adyacencia retorne si este cumple las condiciones descritas anteriormente para ser un árbol.
+
+
+
+\problem \textbf{Ciudades conectadas}
+
+En cierto país existen $n$ ciudades, unidas por $m$ caminos. Cada camino une exactamente 2 ciudades, y los caminos son todos bidireccionales. Además no existe un camino que una una ciudad consigo misma. Sin embargo, actualmente en el país no es posible ir desde cualquier ciudad a otra pasando por ciudades intermedias, es por esto que se propone un plan para aumentar la conectividad y que sea posible llegar desde cualquier ciudad a otra. El objetivo del problema es dado el grafo que representa las ciudades (nodos) y los caminos (arcos) como listas de adyacencia, encontrar el \textbf{mínimo} número de caminos que es necesario construir para conectar todas las ciudades.
+
+\end{problems}
+
+
+
+\end{document}
