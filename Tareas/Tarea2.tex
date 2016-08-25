@@ -1,0 +1,101 @@
+\documentclass[dcc, usedate]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{epstopdf}
+\usepackage{listings}
+
+\title[2]{\textit{Diff} para archivos}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Manuel Cáceres}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+\date{Fecha de entrega: 15 de abril, 23:59 hrs}
+
+\DeclareMathOperator{\lev}{lev}
+\begin{document}
+\maketitle
+
+\section{Introducción}
+La distancia de \textit{Levensthein} es una métrica para \textit{strings} que indica la similitud que existe entre dos cadenas de texto. Informalmente, se puede decir que la distancia de Levensthein mide la mínima cantidad de ediciones puntuales que hay que realizar sobre un \textit{string} para convertirlo en el otro. Las operaciones permitidas son: inserción, borrado o sustitución de un caracter. Por lo tanto, una baja distancia de Levensthein indica que los \textit{strings} son muy parecidos y una alta distancia indicará que son muy distintos. Esta distancia también es conocida como distancia de edición entre dos \textit{strings}
+
+Matemáticamente, la distancia de Levensthein entre dos \textit{strings} $a$ y $b$ de largos $n$ y $m$ respectivamente, se denota como $\lev_{a,b}(n,m)$ y se calcula recursivamente de la siguiente manera:
+\[\lev_{a,b}(i,j) = 
+\left\{
+	\begin{array}{ll}
+	\max(i,j) & \mbox{si } \min(i,j)=0\\
+	\min \left\{
+		\begin{array}{l}
+			\lev_{a,b}(i-1,j)+1\\
+			\lev_{a,b}(i,j-1)+1\\
+			\lev_{a,b}(i-1,j-1) + 1_{(a_i \neq b_j)} 
+		\end{array}   
+	\right. & \mbox{si no}
+	\end{array}
+\right.
+\]
+
+En donde $1_{(a_i \neq b_j)}$ es la función indicatriz, que toma el valor 1 si $a_i \neq b_j$ y 0 si no, y $\lev_{a,b}(i,j)$ corresponde a la distancia entre los primeros $i$ caracteres de $a$ y los primeros $j$ de $b$. Notar que el primer elemento en la función mínimo corresponde al caso en que debiera realizarse un borrado de $a$ a $b$; el segundo, cuando hay una inserción de $a$ a $b$ y el tercero corresponde a si hay que hacer una sustitución o no, dependiendo si los caracteres son el mismo o no.
+
+Por ejemplo, la distancia entre \texttt{mojados} y \texttt{moteado} es 3:
+\begin{enumerate}
+\setlength\itemsep{0em}
+\item mojados $\rightarrow$ mojado\_ (eliminar \textbf{s})
+\item mojado $\rightarrow$ mo\textbf{t}ado (sustituir \textbf{j} por \textbf{t})
+\item mo\textbf{t}ado $\rightarrow$ mo\textbf{te}ado (insertar \textbf{e})
+\end{enumerate}
+
+\section{Implementación}
+Lo que se requiere que usted realice en esta tarea es un similar al comando \texttt{diff} de Unix que muestra las lineas diferentes entre dos archivos. Para esto, usted debe crear su propia implementación de la función de distancia de Leversthein, pero modificada para archivos. Es decir, usted debe encontrar cuáles líneas de un archivo deben borrarse, insertarse o sustituirse para ser idéntico a otro.
+
+Como podrá imaginar, una solución que utilice fuerza bruta es bastante lenta y, por lo tanto, no es aceptable. Entonces, se requiere que usted implemente una versión que utilice un enfoque de programación dinámica para resolver este problema.
+
+\begin{table}[h]
+\centering
+\caption{Archivos de Ejemplo}
+\label{archivos}
+\begin{tabular}{|l|l|}
+\hline
+\begin{tabular}[c]{@{}l@{}}Pollo\\ Perro\\\end{tabular} & \begin{tabular}[c]{@{}l@{}}Pato\\ Perro\\ Conejo\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{A.txt}                       & \multicolumn{1}{c|}{B.txt}                                \\ \hline
+\end{tabular}
+\end{table}
+
+Si consideramos los archivos de la Figura~\ref{archivos}, notaremos que la distancia de Leversthein entre A.txt y B.txt es 2, ya que hay que cambiar \textit{Pollo} por \textit{Pato} y agregar la línea \textit{Conejo}. En el Listado~\ref{output} se puede encontrar un ejemplo de uso del programa y el \texttt{output} esperado.
+
+\begin{lstlisting}[language=bash, keepspaces=true, frame=single, caption=Output esperado, label=output]
+	>java Diff A.txt B.txt
+	>1. Pollo	-> Pato
+ 	 3. 		-> Conejo
+ 	 Distance = 2
+\end{lstlisting}
+
+En definitiva, usted debe entregar un archivo \texttt{Diff.java} cuyo método \texttt{main} reciba dos nombres de archivos como argumentos (Ojo, no leídos desde el teclado) y calcule las ediciones que hay que realizar para que el primero sea idéntico al segundo y muestre la distancia de Levensthein correspondiente.
+
+\section{Condiciones de Entrega}
+\begin{itemize}
+\item La tarea debe programarse en Java.
+\item Es obligatorio la entrega de un informe en formato pdf junto con su tarea (Ver siguiente sección).
+\item Esta tarea es de carácter individual, cualquier caso de copia se evaluará con la nota mínima.
+\item No olvide subir a U-cursos todos los archivos necesarios para que su tarea funcione correctamente.
+\item Debe subir los archivos de código fuente (*.java). Los archivos compilados (*.class) no serán evaluados.
+\item Cualquier duda respecto a la tarea puede ser consultada usando el foro del curso.
+\item \textbf{NO} se aceptarán atrasos.
+\end{itemize}
+
+\section{Informe}
+El informe debe describir el trabajo realizado, la solución implementada, los resultados obtenidos y las conclusiones o interpretaciones de estos. Principalmente debe ser breve, describiendo cada uno de los puntos que a continuación se indican:
+\begin{itemize}
+\item \textbf{Portada:} Indicando número de la tarea, fecha, autor, email, código del curso, etc.
+\item \textbf{Introducción:} Descripción breve del problema y su solución.
+\item \textbf{Análisis del Problema:} Exponga en detalle el problema, los supuestos que pretende ocupar, casos de borde y brevemente la metodología usada para resolverlo.
+\item \textbf{Solución del Problema:} Indique claramente los pasos que siguió para llegar a la solución del problema. Muestre mediante figuras y ejemplos qué es lo que realiza su código. Evite copiar todo el código fuente en el informe, sin embargo, puede mostrar las partes relevantes de éste.
+\item \textbf{Resultados y Conclusiones:} Muestre ejemplos de entradas y salidas de su programa, incluyendo capturas de pantalla de estos. Analice la complejidad computacional de su solución. ¿Es mejor que fuerza bruta? ¿Es óptima? Discuta estos resultados y elabore conclusiones sobre su trabajo.
+\end{itemize}
+
+\end{document}
