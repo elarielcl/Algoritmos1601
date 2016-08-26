@@ -1,0 +1,45 @@
+\documentclass[dcc]{fcfmcourse}
+\usepackage{teoria}
+\usepackage[utf8]{inputenc}
+\usepackage{epstopdf}
+
+\title[1]{Clases, Strings y Archivos}
+\course[CC3001]{Algoritmos y Estructuras de Datos}
+\professor{Nelson Baloian}
+\professor{Patricio Poblete}
+\assistant{Sebastián Ferrada}
+\assistant{Sergio Peñafiel}
+% Si pasas el comando usedate a la clase, la fecha aparecerá bajo la lista de auxiliares.
+% Puedes usar el formato de fecha por defecto de latex (y traducirla usando babel)
+% o puedes escribir lo que quieras con el comando \date.
+% \date{1 de Septiembre, 2015}
+
+
+\begin{document}
+\maketitle
+
+\begin{problems}
+\problem Escribir la clase Punto con un constructor que reciba las coordenadas reales $x$ e $y$. La clase debe contar con los siguientes métodos:
+\begin{itemize}
+\item \texttt{public void moveBy(double dx, double dy)}
+\item \texttt{public void moveTo(double x, double y)}
+\item \texttt{public void scaleBy(double scale)}
+\item \texttt{public Punto substract(Punto other)}
+\item \texttt{public double module()}
+\end{itemize}
+
+\problem Una palabra es palíndrome cuando se lee igual al derecho o al revés.
+\begin{enumerate}
+\item Escribir una función que reciba un String y diga si es un palíndrome o no
+\item Escribir una función que reciba un caracter y un String y que retorne el mismo String, pero borrando las apariciones del caracter dado. Ej \texttt{borrar('a', "casa")} retorna \texttt{"cs"}
+\item Utilice las funciones anteriores en un programa que lea una frase desde el teclado y diga si es palíndrome o no. Ej: "Anita lava la tina" es palíndrome, quitando los espacios y dejando todo en minúsculas.
+\end{enumerate}
+
+\problem En el archivo \textit{notas.txt} se encuentran las notas de los alumnos de CC3001 del semestre pasado. En cada línea se encuentra el nombre del alumno y las notas de los tres controles, todo separado por el caracter ';'. Ej: \texttt{Perez Pablo;4.5;3.2;6.6}.
+\begin{enumerate}
+\item Escribir un programa que lea el archivo y muestre los porcentajes de alumnos con nota roja y azul
+\item Escribir un programa que lea el archivo y escriba en el archivo \textit{eximidos.txt} los nombres de los alumnos que tienen promedio mayor a $5.5$
+\end{enumerate}
+
+\end{problems}
+\end{document}
