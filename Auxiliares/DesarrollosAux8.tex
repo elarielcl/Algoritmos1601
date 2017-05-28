@@ -1,3 +1,4 @@
+ 
  \documentclass[dcc,sol]{fcfmcourse}
 \usepackage{teoria}
 \usepackage[utf8x]{inputenc}
@@ -69,10 +70,10 @@
 
 \begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
 \node [circle,draw] {$5$}
+  child {node [square,draw] {}}
   child {node [circle,draw] {$10$}
     child {node [square,draw] {}}
     child {node [square,draw] {}}}
-  child {node [square,draw] {}}
   ;
 \end{tikzpicture}
 \\Rotación Simple\\
@@ -391,10 +392,10 @@
 
 \begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
 \node [circle,draw] {$1$}
+  child {node [square,draw] {}}
   child {node [circle,draw] {$2$}
     child {node [square,draw] {}}
     child {node [square,draw] {}}}
-  child {node [square,draw] {}}
   ;
 \end{tikzpicture}
 \\Rotación Simple\\
@@ -476,6 +477,7 @@
   ;
 \end{tikzpicture}
 \end{solution}
+\end{problems}
 \newpage
 \section*{Skip List}
 \begin{problems}
